@@ -230,9 +230,6 @@ app.post('/clients', async (req, res) => {
     }
 });
 
-
-// 6. Inicialização do Servidor
-
 // Opcional: Garante que a conexão com o cliente será fechada quando o app for encerrado
 process.on('SIGINT', async () => {
   await client.close();
