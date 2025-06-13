@@ -232,12 +232,6 @@ app.post('/clients', async (req, res) => {
 
 
 // 6. Inicialização do Servidor
-// Apenas inicia o servidor DEPOIS de conectar ao banco de dados
-connectToDatabase().then(() => {
-  app.listen(port, () => {
-    console.log(`Servidor rodando na porta http://localhost:${port}`);
-  });
-});
 
 // Opcional: Garante que a conexão com o cliente será fechada quando o app for encerrado
 process.on('SIGINT', async () => {
@@ -245,3 +239,4 @@ process.on('SIGINT', async () => {
   console.log("Conexão com o MongoDB fechada.");
   process.exit(0);
 });
+module.exports = app;
