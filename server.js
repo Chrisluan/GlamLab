@@ -4,7 +4,8 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 
 const uri = process.env.MONGODB_URI;
@@ -22,6 +23,7 @@ const client = new MongoClient(uri, {
 });
 
 // Conexão com cache por execução
+
 let cachedDb = null;
 async function getDatabase() {
   if (!cachedDb) {
