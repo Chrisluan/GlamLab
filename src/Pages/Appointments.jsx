@@ -1,12 +1,12 @@
-import React from 'react'
-import { Box } from '@chakra-ui/react';
+import React, { useContext } from "react";
+import { Box } from "@chakra-ui/react";
+import { useData } from "../Context/DataContext";
+
+import { AppointmentCard } from "../Components/Appointments/AppointmentCard";
 export const Appointments = () => {
-  return (
-    <Box sx={{
-      width:"200px",
-      height:"200px",
-      backgroundColor: "red",
-    }}></Box>
-  )
-}
+  const {clients} = useData();
+
+  
+  return <AppointmentCard></AppointmentCard>;
+};
 export default Appointments;
