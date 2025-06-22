@@ -1,13 +1,31 @@
-import { createContext, useContext, useEffect, useState } from "react";
-
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { lazy } from "react";
 const DataContext = createContext(null);
 DataContext.displayName = "DataContext";
 
 const DataProvider = ({ children }) => {
-  const [appointments, setAppointments] = useState([{}]);
-  const [clients, setClients] = useState([{}]);
-  const [professionals, setProfessionals] = useState([{}]);
-  const [finances, setFinances] = useState([{}]);
+  const [appointments, setAppointments] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [professionals, setProfessionals] = useState([]);
+  const [finances, setFinances] = useState([]);
+
+  useEffect(() => {
+    const GetAppointments = async () => {
+      if (appointments.length < 1) {
+        try {
+          console.log("Requiring Appointments")
+          const response = await fetch(
+            "http://glamlab-backend.vercel.app/appointments"
+          );
+          const data = await response.json();
+          setAppointments(data);
+        } catch (e) {
+          console.error("Erro ao buscar agendamentos:", e);
+        }
+      }
+    };
+    GetAppointments();
+  }, []);
 
   return (
     <DataContext.Provider

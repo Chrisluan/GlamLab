@@ -1,7 +1,7 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
 import React from "react";
 import { useContext } from "react";
-import { NavigationContext } from "../../Context/NavigationContext";
+import { NavigationContext } from "../../context/NavigationContext";
 export const ContentContainer = ({ children }) => {
   const {CurrentPageProps} = useContext(NavigationContext)
   return (
