@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-
+import "./App.css";
 import { Button, Flex, Heading, Box } from "@chakra-ui/react";
 import Sidebar from "./Components/Sidebar/Sidebar";
 import { ContentContainer } from "./Components/Content/ContentContainer";
