@@ -1,7 +1,3 @@
-Claro! Aqui está um exemplo de README personalizado e profissional para o **front-end do GlamLab**, substituindo o conteúdo genérico do template Vite:
-
----
-
 # 💅 GlamLab – Front-end
 
 Interface web do GlamLab, um sistema de gestão minimalista para salões de beleza. Este projeto foi desenvolvido utilizando **React**, **Vite** e **Chakra UI**, com foco em performance, usabilidade e um design limpo e responsivo.
@@ -13,10 +9,9 @@ Interface web do GlamLab, um sistema de gestão minimalista para salões de bele
 * [React](https://reactjs.org/)
 * [Vite](https://vitejs.dev/)
 * [Chakra UI](https://chakra-ui.com/)
-* [React Router](https://reactrouter.com/)
 * [Context API](https://reactjs.org/docs/context.html)
 * [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
-
+* [MongoDB Atlas](https://cloud.mongodb.com/) para o back-end.
 ---
 
 ## 📦 Instalação
@@ -49,36 +44,10 @@ Abra no navegador: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## 📁 Estrutura do Projeto
-
-```bash
-├── public/
-├── src/
-│   ├── Components/
-│   ├── Context/
-│   ├── Pages/
-│   ├── Styles/
-│   ├── utils/
-│   └── main.jsx
-├── .eslintrc.cjs
-├── vite.config.js
-└── README.md
-```
-
----
 
 ## 🎨 UI & Design
 
-A interface segue uma abordagem flat e elegante com bordas arredondadas e paleta de cores suave:
-
-* `#C7D1C8` – Verde suave
-* `#3A4046` – Cinza escuro
-* `#C8B58D` – Bege dourado
-* `#FFF9F5` – Branco creme
-* `#362B31` – Roxo escuro
-* `#FFFFFF` – Branco puro
-
-Responsivo para desktop e dispositivos móveis.
+Responsivo para desktop 
 
 ---
 
@@ -104,5 +73,3 @@ npm run lint
 Este projeto está licenciado sob a [MIT License](LICENSE).
 
 ---
-
-Se quiser, posso adaptar esse conteúdo para português mais formal ou informal, ou criar uma versão multilíngue. Deseja incluir algum link para deploy, design no Figma ou documentação de API?
