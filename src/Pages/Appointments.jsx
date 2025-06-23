@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -19,34 +19,49 @@ import { AppointmentCard } from "../Components/Appointments/AppointmentCard";
 export const Appointments = () => {
   const { appointments } = useData();
   const now = new Date();
-  const [ isOpen, setIsOpen ] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [editingAppointment, setEditingAppointment] = useState();
 
-  const OpenModal = (id) => setIsOpen(true);
+  useEffect(() => {
+    console.log(editingAppointment);
+    if (editingAppointment != null) OpenEditingModal();
+  }, [editingAppointment]);
 
-  const EditModal = ()=>{
+  const OpenEditingModal = () => setIsOpen(true);
+
+  const EditModal = ({ popIn }) => {
     return (
-      <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={()=>setIsOpen(false)}>
+      <Modal
+        blockScrollOnMount={false}
+        isOpen={popIn}
+        motionPreset="slideInBottom"
+        onClose={() => {
+          setIsOpen(false);
+          setEditingAppointment(null);
+        }}
+        size={"full"}
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>
+            Editando agendamento de {editingAppointment?.client.name}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            
-          </ModalBody>
+          <ModalBody></ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={()=>setIsOpen(false)}>
+            <Button colorScheme="pink" mr={3} onClick={() => setIsOpen(false)}>
               Close
             </Button>
             <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-    )
-  }
+    );
+  };
   return (
     <Flex width={"100%"} flexDir={"column"} gap={1}>
-      
+      <EditModal popIn={isOpen}></EditModal>
 
       {appointments
         .sort((a, b) => {
@@ -56,7 +71,7 @@ export const Appointments = () => {
         })
         .map((appointment, i) => (
           <AppointmentCard
-            OpenModal={()=>OpenModal()}
+            setEditingAppointments={setEditingAppointment}
             key={i}
             appointment={appointment}
           />

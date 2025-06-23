@@ -19,7 +19,7 @@ import { MdCancel } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 export const AppointmentCard = ({
   appointment,
-  OpenModal,
+  setEditingAppointments,
   OnCancel,
   OnConfirm,
 }) => {
@@ -79,9 +79,7 @@ export const AppointmentCard = ({
             </MenuItem>
             <MenuItem
               gap={2}
-              onClick={() => {
-                OpenModal();
-              }}
+              onClick={() => {setEditingAppointments(appointment)}}
             >
               <FaEdit></FaEdit>Editar
             </MenuItem>
