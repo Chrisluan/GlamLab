@@ -1,12 +1,75 @@
-# React + Vite
+# 💅 GlamLab – Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web do GlamLab, um sistema de gestão minimalista para salões de beleza. Este projeto foi desenvolvido utilizando **React**, **Vite** e **Chakra UI**, com foco em performance, usabilidade e um design limpo e responsivo.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Tecnologias
 
-## Expanding the ESLint configuration
+* [React](https://reactjs.org/)
+* [Vite](https://vitejs.dev/)
+* [Chakra UI](https://chakra-ui.com/)
+* [Context API](https://reactjs.org/docs/context.html)
+* [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
+* [MongoDB Atlas](https://cloud.mongodb.com/) para o back-end.
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Instalação
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/glamlab-frontend.git
+
+# Acesse a pasta do projeto
+cd glamlab-frontend
+
+# Instale as dependências
+npm install
+# ou
+yarn
+```
+
+---
+
+## 🚀 Rodando o projeto
+
+```bash
+# Ambiente de desenvolvimento
+npm run dev
+# ou
+yarn dev
+```
+
+Abra no navegador: [http://localhost:5173](http://localhost:5173)
+
+---
+
+
+## 🎨 UI & Design
+
+Responsivo para desktop 
+
+---
+
+## ✅ Padrões de Código
+
+O projeto segue boas práticas com ESLint e Prettier já configurados. Use o comando abaixo para verificar e corrigir problemas de formatação:
+
+```bash
+npm run lint
+```
+
+---
+
+## 📌 Requisitos
+
+* Node.js 18+
+* npm ou yarn
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
+---
