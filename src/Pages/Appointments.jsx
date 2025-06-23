@@ -22,8 +22,9 @@ export const Appointments = () => {
   const [ isOpen, setIsOpen ] = useState(false);
 
   const OpenModal = (id) => setIsOpen(true);
-  return (
-    <Flex width={"100%"} flexDir={"column"} gap={1}>
+
+  const EditModal = ()=>{
+    return (
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={()=>setIsOpen(false)}>
         <ModalOverlay />
         <ModalContent>
@@ -41,6 +42,11 @@ export const Appointments = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+    )
+  }
+  return (
+    <Flex width={"100%"} flexDir={"column"} gap={1}>
+      
 
       {appointments
         .sort((a, b) => {
