@@ -15,7 +15,7 @@ const DataProvider = ({ children }) => {
         try {
           console.log("Requiring Appointments")
           const response = await fetch(
-            "http://glamlab-backend.vercel.app/appointments"
+            "https://glamlab-backend.vercel.app/appointments"
           );
           const data = await response.json();
           setAppointments(data);

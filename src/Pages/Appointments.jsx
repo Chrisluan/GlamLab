@@ -23,11 +23,10 @@ export const Appointments = () => {
   const [editingAppointment, setEditingAppointment] = useState();
 
   useEffect(() => {
-    console.log(editingAppointment);
-    if (editingAppointment != null) OpenEditingModal();
+    if (editingAppointment != null) openEditingModal();
   }, [editingAppointment]);
 
-  const OpenEditingModal = () => setIsOpen(true);
+  const openEditingModal = () => setIsOpen(true);
 
   const EditModal = ({ popIn }) => {
     return (
