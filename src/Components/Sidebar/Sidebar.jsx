@@ -18,7 +18,7 @@ export const Sidebar = () => {
       backgroundColor={"#f6f6f6"}
     >
       <Flex justifyContent={"center"} alignItems={"center"} height="80px">
-        <Heading>GlamLab</Heading>
+        <Heading fontSize={"2xl"}>GlamLab</Heading>
       </Flex>
 
       <Flex flexDir={"column"}>

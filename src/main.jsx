@@ -4,10 +4,10 @@ import App from "./App.jsx";
 import { NavigationProvider } from "./Context/NavigationContext.jsx";
 import { ChakraProvider, Spinner } from "@chakra-ui/react";
 import { DataProvider } from "./Context/DataContext.jsx";
-
+import theme from "./Theme/theme.js";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <NavigationProvider>
         <Suspense fallback={()=><Spinner></Spinner>}>
           <DataProvider>

@@ -17,7 +17,7 @@ import { FaCheck } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
-export const AppointmentCard = ({
+ const AppointmentCard = ({
   appointment,
   setEditingAppointments,
   OnCancel,
@@ -65,7 +65,7 @@ export const AppointmentCard = ({
       </Flex>
       <Box>
         <Menu>
-          <MenuButton as={Button}>
+          <MenuButton as={Button} variant={"secondary"}>
             <SlOptions></SlOptions>
           </MenuButton>
           <MenuList p={0}>
@@ -98,3 +98,4 @@ export const AppointmentCard = ({
     </Flex>
   );
 };
+export default AppointmentCard

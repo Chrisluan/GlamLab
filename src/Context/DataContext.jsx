@@ -15,7 +15,7 @@ const DataProvider = ({ children }) => {
         try {
           console.log("Requiring Appointments")
           const response = await fetch(
-            "https://glamlab-backend.vercel.app/appointments"
+            "https://glamlab-backend.vercel.app/appointments?amount=10"
           );
           const data = await response.json();
           setAppointments(data);
@@ -43,4 +43,4 @@ const useData = () => {
   return context;
 };
 
-export { DataProvider, DataContext, useData }; // ✅ Correto
+export { DataProvider, DataContext, useData };
