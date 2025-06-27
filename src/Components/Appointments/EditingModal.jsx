@@ -10,6 +10,7 @@ import {
   FormControl,
   Input,
   Select,
+  useToast,
 } from "@chakra-ui/react";
 import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const EditingModal = ({
   const [form, setForm] = useState({});
   const [sending, setSending] = useState(false);
   const { clients } = useData();
+  const toast = useToast();
   const HandleFormChanges = (e) => {
     //Não vou mentir, essa função foi feita por IA, só dei o nome 👁️🫦👁️
 
@@ -86,7 +88,11 @@ const EditingModal = ({
               >
                 {clients.map((client) => {
                   return (
-                    <option key={client._id} value={JSON.stringify(client)}>
+                    <option
+                      defaultValue={currentEditing?.client.name}
+                      key={client._id}
+                      value={JSON.stringify(client)}
+                    >
                       {client.name}
                     </option>
                   );
@@ -105,6 +111,15 @@ const EditingModal = ({
                 form._id,
                 formWithoutId
               ).then(() => {
+                toast({
+
+                  title:`Agendamento de ${form?.client.name} editado com Sucesso`,
+                  status: 'success',
+                  duration: 2000,
+                  isClosable: true,
+                  position:"top-right",
+                  size:"sm"
+                })
                 setPopIn(false);
                 setSending(false);
               });

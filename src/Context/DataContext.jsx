@@ -2,9 +2,9 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
   CreateNewAppointment,
   EditAppointment,
+  FetchAllAppointments
 } from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
-import { FetchAllAppointments } from "./DBConnectionMethods/Appointments";
 import { FetchAllClients } from "./DBConnectionMethods/Clients";
 
 const DataContext = createContext(null);
@@ -46,4 +46,5 @@ export {
   useData,
   CreateNewAppointment,
   EditAppointment,
+
 };

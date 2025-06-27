@@ -1,8 +1,11 @@
+
+
 const CreateNewAppointment = () => {};
+
 const EditAppointment = async (id, newData) => {
   try {
     const rawResponse = await fetch(
-      `http://localhost:3000/editappointment/${id}`,
+      `https://glamlab-backend.vercel.app/editappointment/${id}`,
       {
         method: "PUT",
         headers: {
@@ -11,7 +14,7 @@ const EditAppointment = async (id, newData) => {
         },
         body: JSON.stringify(newData),
       }
-    );
+    )
     return rawResponse.json();
   } catch (e) {
     console.log(e);
