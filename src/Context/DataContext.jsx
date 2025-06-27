@@ -1,5 +1,12 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  CreateNewAppointment,
+  EditAppointment,
+} from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
+import { FetchAllAppointments } from "./DBConnectionMethods/Appointments";
+import { FetchAllClients } from "./DBConnectionMethods/Clients";
+
 const DataContext = createContext(null);
 DataContext.displayName = "DataContext";
 
@@ -10,21 +17,11 @@ const DataProvider = ({ children }) => {
   const [finances, setFinances] = useState([]);
 
   useEffect(() => {
-    const GetAppointments = async () => {
-      if (appointments.length < 1) {
-        try {
-          console.log("Requiring Appointments")
-          const response = await fetch(
-            "https://glamlab-backend.vercel.app/appointments?amount=10"
-          );
-          const data = await response.json();
-          setAppointments(data);
-        } catch (e) {
-          console.error("Erro ao buscar agendamentos:", e);
-        }
-      }
+    const FetchData = async() => {
+      setClients(await FetchAllClients());
+      setAppointments(await FetchAllAppointments());
     };
-    GetAppointments();
+    FetchData();
   }, []);
 
   return (
@@ -43,4 +40,10 @@ const useData = () => {
   return context;
 };
 
-export { DataProvider, DataContext, useData };
+export {
+  DataProvider,
+  DataContext,
+  useData,
+  CreateNewAppointment,
+  EditAppointment,
+};

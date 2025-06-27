@@ -36,6 +36,7 @@ export const Appointments = () => {
       setEditingAppointment(null);
     }
   }, [isEditingOpen]);
+  
   const openEditingModal = () => setIsEditingOpen(true);
 
   return appointments ? (
