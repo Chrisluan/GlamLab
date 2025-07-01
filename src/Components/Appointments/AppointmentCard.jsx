@@ -12,33 +12,35 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import React from "react";
+import { useModal } from "../../Context/ModalsContext";
 import { SlOptions } from "react-icons/sl";
 import { FaCheck } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
- const AppointmentCard = ({
+const AppointmentCard = ({
   appointment,
   setEditingAppointments,
   OnCancel,
   OnConfirm,
 }) => {
+  const { openEditModal } = useModal();
   return (
     <Flex
       fontFamily={"Segoe UI, Tahoma, Geneva, Verdana, sans-serif"}
       width={"100%"}
       height={"fit-content"}
       padding={4}
-      borderRadius={"2xl"}
+      transition="all 0.3s"
+      border={"1px solid"}
+      borderColor={"brand.200"}
+      borderRadius={"md"}
       flexDir={"row"}
       justifyContent={"space-between"}
       alignItems={"center"}
       fontSize={"sm"}
-      sx={{
-        boxShadow: "0px 6px 19px -4px rgba(0,0,0,0.1)",
-      }}
       _hover={{
-        bg: "rgb(255, 255, 255)",
+        bg: "brand.200",
       }}
     >
       <Flex flexDir={"column"}>
@@ -51,12 +53,14 @@ import { FaEye } from "react-icons/fa";
           >
             {appointment.client?.name}
           </Text>
-          <Text>{appointment.service?.name}</Text>
+          <Text aria-label="services">{appointment.service?.name}</Text>
         </Flex>
         <Flex alignItems={"center"} gap={1}>
-          <Text>Agendado para:</Text>
-          <Text>{new Date(appointment.date).toLocaleDateString()}</Text>●
-          <Text>
+          <Text aria-label="appointment date">
+            {new Date(appointment.date).toLocaleDateString()}
+          </Text>
+          ●
+          <Text aria-label="appointment time">
             {new Date(appointment.date).getHours() +
               "h" +
               new Date(appointment.date).getMinutes()}
@@ -79,7 +83,10 @@ import { FaEye } from "react-icons/fa";
             </MenuItem>
             <MenuItem
               gap={2}
-              onClick={() => {setEditingAppointments(appointment)}}
+              onClick={() => {
+                console.log(appointment)
+                openEditModal(appointment);
+              }}
             >
               <FaEdit></FaEdit>Editar
             </MenuItem>
@@ -98,4 +105,4 @@ import { FaEye } from "react-icons/fa";
     </Flex>
   );
 };
-export default AppointmentCard
+export default AppointmentCard;

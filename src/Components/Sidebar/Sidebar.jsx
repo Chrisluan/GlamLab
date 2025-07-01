@@ -5,8 +5,6 @@ import SidebarButton from "./components/SidebarButton";
 import { NavigationContext } from "../../Context/NavigationContext";
 import { options } from "../../Context/NavigationContext";
 export const Sidebar = () => {
-  // 1. Gerenciar o estado aqui. '2' será o valor inicial.
-  
   const { switchPage, CurrentPageProps } = useContext(NavigationContext);
 
   return (

@@ -1,7 +1,3 @@
-
-
-const CreateNewAppointment = () => {};
-
 const EditAppointment = async (id, newData) => {
   try {
     const rawResponse = await fetch(
@@ -14,10 +10,31 @@ const EditAppointment = async (id, newData) => {
         },
         body: JSON.stringify(newData),
       }
-    )
+    );
     return rawResponse.json();
   } catch (e) {
     console.log(e);
+  }
+};
+const CreateAppointment = async (data) => {
+  const validData = Object.keys(data).reduce((acc, key) => {
+    if (validInputs.includes(key)) {
+      acc[key] = data[key];
+    }
+    return acc;
+  }, {});
+
+  try {
+    const response = fetch("https://glamlab-backend.vercel.app/appointments", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  } catch (e) {
+    console.log("Erro em: ", { e });
   }
 };
 const FetchAllAppointments = async () => {
@@ -32,4 +49,4 @@ const FetchAllAppointments = async () => {
     console.error("Erro ao buscar agendamentos:", e);
   }
 };
-export { CreateNewAppointment, EditAppointment, FetchAllAppointments };
+export { CreateAppointment, EditAppointment, FetchAllAppointments };

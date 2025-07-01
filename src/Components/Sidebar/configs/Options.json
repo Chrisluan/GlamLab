@@ -21,7 +21,12 @@
     "icon": ""
   },
   {
-    "title": "Configurações",
+    "title": "Clientes",
+    "page": "Clients",
+    "icon": ""
+  },
+  {
+    "title": "Configuração",
     "page": "Configuration",
     "icon": ""
   }

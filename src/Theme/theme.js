@@ -7,7 +7,7 @@ const theme = extendTheme({
     global: {
       body: {
         bg: "#FFF9F5",
-        color: "#362B31",
+        color: "brand.700",
       },
     },
   },
@@ -21,6 +21,7 @@ const theme = extendTheme({
       100: "#F8F4EF",
       200: "#E8E3D9",
       300: "#C8B58D", // botão destacado
+      
       400: "#A67F6A",
       500: "#C7D1C8", // campos selecionados/bordas
       600: "#3A4046", // texto principal
@@ -39,12 +40,12 @@ const theme = extendTheme({
       },
       variants: {
         solid: {
-          bg: "brand.300",
+          bg: "brand.100",
           color: "brand.400",
           fontWeight: "600",
           _hover: {
             color:"brand.700",
-            bg: "brand.400",
+            bg: "brand.100",
           },
         },
         secondary: {

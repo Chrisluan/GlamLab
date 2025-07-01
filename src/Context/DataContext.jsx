@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import {
-  CreateNewAppointment,
+  CreateAppointment,
   EditAppointment,
-  FetchAllAppointments
+  FetchAllAppointments,
 } from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
 import { FetchAllClients } from "./DBConnectionMethods/Clients";
@@ -17,7 +17,7 @@ const DataProvider = ({ children }) => {
   const [finances, setFinances] = useState([]);
 
   useEffect(() => {
-    const FetchData = async() => {
+    const FetchData = async () => {
       setClients(await FetchAllClients());
       setAppointments(await FetchAllAppointments());
     };
@@ -44,7 +44,6 @@ export {
   DataProvider,
   DataContext,
   useData,
-  CreateNewAppointment,
+  CreateAppointment,
   EditAppointment,
-
 };

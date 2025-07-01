@@ -1,24 +1,23 @@
-import { createContext, useState } from "react";
+import { createContext, lazy, useState } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import options from "../Components/Sidebar/configs/Options.json";
 
 //Pages
 import Appointments from "../Pages/Appointments";
 import Dashboard from "../Pages/Dashboard";
-import Configuration from "../Pages/Configuration";
+import Clients from "../Pages/Clients";
 import Finances from "../Pages/Finances";
 import Professionals from "../Pages/Professionals";
 import NoPage from "../Pages/NoPage";
-
-
+import Configuration from "../Pages/Configuration";
 const pagesComponents = {
-  Appointments,
-  NoPage,
-  Dashboard,
-  Finances,
-  Professionals,
-  Configuration
-  
+  Appointments: lazy(() => import ("../Pages/Appointments")),
+  NoPage: lazy(() => import ("../Pages/NoPage")),
+  Dashboard: lazy(() => import ("../Pages/Dashboard")),
+  Finances: lazy(() => import ("../Pages/Finances")),
+  Professionals: lazy(() => import ("../Pages/Professionals")),
+  Clients: lazy(() => import ("../Pages/Clients")),
+  Configuration: lazy(() => import ("../Pages/Configuration")),
 };
 
 const NavigationContext = createContext();
@@ -43,11 +42,17 @@ const NavigationProvider = ({ children }) => {
     }
   };
 
-  const SelectedPageComponent = pagesComponents[CurrentPageProps?.page] || NoPage;
+  const SelectedPageComponent =
+    pagesComponents[CurrentPageProps?.page] || NoPage;
 
   return (
     <NavigationContext.Provider
-      value={{ CurrentPageProps, SelectedPageComponent, switchPage, pagesComponents }}
+      value={{
+        CurrentPageProps,
+        SelectedPageComponent,
+        switchPage,
+        pagesComponents,
+      }}
     >
       {children}
     </NavigationContext.Provider>

@@ -9,30 +9,39 @@ export default function SidebarButton(props) {
   const checkbox = getRadioProps();
 
   return (
-    <Box as='label'>
+    <Box as="label">
       <input {...input} />
       <Box
         {...checkbox}
-        cursor='pointer'
+        cursor="pointer"
+        position= "relative"
         _checked={{
-          bg: '#f6d7f9',
-          color: 'white',
-          overflow:"hidden",
+          bg: "brand.200",
+          color: "white",
+          overflow: "hidden",
           position: "relative",
-          color:"#35083a",
+          color: "brand.700",
           _after: {
             content: '""',
-            position: 'absolute',
+            position: "absolute",
             left: 0,
-            top:0,
-            width: '5px',
+            top: 0,
+            width: "5px",
             height: "100%",
-            
-            bg: "#35083a"
-          }
+            bg: "brand.300",
+          },
         }}
-        _focus={{
-          
+        _hover={{
+          bg: "brand.100",
+          _after: {
+            content: '""',
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "2px",
+            height: "100%",
+            bg: "brand.300",
+          },
         }}
         px={5}
         py={3}

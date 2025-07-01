@@ -16,6 +16,7 @@ import {
 import { useData } from "../Context/DataContext";
 import LoadingScreen from "../Components/Global/LoadingScreen";
 import EditingModal from "../Components/Appointments/EditingModal";
+import { useModal } from "../Context/ModalsContext";
 
 // Lazy import do AppointmentCard
 const AppointmentCard = lazy(() =>
@@ -23,30 +24,13 @@ const AppointmentCard = lazy(() =>
 );
 
 export const Appointments = () => {
+  
   const { appointments } = useData();
   const now = new Date();
-  const [isEditingOpen, setIsEditingOpen] = useState(false);
-  const [editingAppointment, setEditingAppointment] = useState();
 
-  useEffect(() => {
-    if (editingAppointment != null) openEditingModal();
-  }, [editingAppointment]);
-  useEffect(() => {
-    if (isEditingOpen == false) {
-      setEditingAppointment(null);
-    }
-  }, [isEditingOpen]);
-  
-  const openEditingModal = () => setIsEditingOpen(true);
-
-  return appointments ? (
+  return (
     <Flex width={"100%"} flexDir={"column"} gap={1}>
-      <EditingModal
-        setPopIn={setIsEditingOpen}
-        popIn={isEditingOpen}
-        setCurrentEditing={setEditingAppointment}
-        currentEditing={editingAppointment}
-      />
+      
       <Suspense fallback={<LoadingScreen></LoadingScreen>}>
         {appointments
           .sort((a, b) => {
@@ -57,16 +41,13 @@ export const Appointments = () => {
           })
           .map((appointment, i) => (
             <AppointmentCard
-              setEditingAppointments={setEditingAppointment}
               key={i}
               appointment={appointment}
             />
           ))}
       </Suspense>
     </Flex>
-  ) : (
-    <LoadingScreen></LoadingScreen>
-  );
+  )
 };
 
 export default Appointments;
