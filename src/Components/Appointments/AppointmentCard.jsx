@@ -55,16 +55,22 @@ const AppointmentCard = ({
           </Text>
           <Text aria-label="services">{appointment.service?.name}</Text>
         </Flex>
-        <Flex alignItems={"center"} gap={1}>
-          <Text aria-label="appointment date">
-            {new Date(appointment.date).toLocaleDateString()}
-          </Text>
-          ●
-          <Text aria-label="appointment time">
-            {new Date(appointment.date).getHours() +
-              "h" +
-              new Date(appointment.date).getMinutes()}
-          </Text>
+        <Flex gap={5}>
+          <Flex>
+            <Text>Profissional: {appointment.professional.name}</Text>
+          </Flex>
+          {/*Date*/}
+          <Flex alignItems={"center"} gap={1}>
+            <Text aria-label="appointment date">
+              {new Date(appointment.date).toLocaleDateString()}
+            </Text>
+            ●
+            <Text aria-label="appointment time">
+              {new Date(appointment.date).getHours() +
+                "h" +
+                new Date(appointment.date).getMinutes()}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
       <Box>
@@ -84,7 +90,7 @@ const AppointmentCard = ({
             <MenuItem
               gap={2}
               onClick={() => {
-                console.log(appointment)
+                console.log(appointment);
                 openEditModal(appointment);
               }}
             >

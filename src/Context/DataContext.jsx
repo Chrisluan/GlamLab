@@ -6,7 +6,8 @@ import {
 } from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
 import { FetchAllClients } from "./DBConnectionMethods/Clients";
-
+import { FetchAllProfessionals } from "./DBConnectionMethods/Professionals";
+import { FetchAllServices } from "./DBConnectionMethods/Services";
 const DataContext = createContext(null);
 DataContext.displayName = "DataContext";
 
@@ -14,19 +15,32 @@ const DataProvider = ({ children }) => {
   const [appointments, setAppointments] = useState([]);
   const [clients, setClients] = useState([]);
   const [professionals, setProfessionals] = useState([]);
+  const [services, setServices] = useState([]);
   const [finances, setFinances] = useState([]);
 
+  const FetchData = async () => {
+    setClients(await FetchAllClients());
+    setAppointments(await FetchAllAppointments());
+    setProfessionals(await FetchAllProfessionals());
+    setServices(await FetchAllServices());
+  };
   useEffect(() => {
-    const FetchData = async () => {
-      setClients(await FetchAllClients());
-      setAppointments(await FetchAllAppointments());
-    };
     FetchData();
   }, []);
 
+  const UpdateAllData = async () => {
+    await FetchData();
+  };
   return (
     <DataContext.Provider
-      value={{ appointments, clients, professionals, finances }}
+      value={{
+        appointments,
+        services,
+        clients,
+        professionals,
+        finances,
+        UpdateAllData,
+      }}
     >
       {children}
     </DataContext.Provider>

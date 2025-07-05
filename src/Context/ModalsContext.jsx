@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import EditingModal from "../Components/Appointments/EditingModal";
+import CreateModal from "../Components/Appointments/CreateModal";
 // Importe os outros modais se existirem
 
 const ModalContext = createContext(null);
@@ -7,12 +8,19 @@ ModalContext.displayName = "ModalContext";
 
 export const ModalProvider = ({ children }) => {
   const [editingModal, setEditingModal] = useState({ open: false, data: null });
-  const [warningModal, setWarningModal] = useState({ open: false, title: "", message: "" });
-  const [messageModal, setMessageModal] = useState({ open: false, title: "", message: "" });
-  const [createModal, setCreateModal] = useState({ open: false });
+  const [warningModal, setWarningModal] = useState({
+    open: false,
+    title: "",
+    message: "",
+  });
+  const [messageModal, setMessageModal] = useState({
+    open: false,
+    title: "",
+    message: "",
+  });
+  const [createModal, setCreateModal] = useState({ open: false, data: null });
 
   const openEditModal = (appointment) => {
-    console.log(appointment)
     setEditingModal({ open: true, data: appointment });
   };
 
@@ -25,7 +33,7 @@ export const ModalProvider = ({ children }) => {
   };
 
   const closeCreateModal = () => {
-    setCreateModal({ open: false });
+    setCreateModal({ open: false, data: null });
   };
 
   const openWarningModal = ({ title, message }) => {
@@ -63,7 +71,10 @@ export const ModalProvider = ({ children }) => {
         setPopIn={closeEditModal}
         appointment={editingModal.data}
       />
-
+      <CreateModal
+        popIn={createModal.open}
+        setPopIn={closeCreateModal}
+      />
       {/* Warning Modal */}
       {/* <WarningModal
         isOpen={warningModal.open}
@@ -89,6 +100,7 @@ export const ModalProvider = ({ children }) => {
 // Hook para usar
 export const useModal = () => {
   const context = useContext(ModalContext);
-  if (!context) throw new Error("useModal deve ser usado dentro de ModalProvider");
+  if (!context)
+    throw new Error("useModal deve ser usado dentro de ModalProvider");
   return context;
 };

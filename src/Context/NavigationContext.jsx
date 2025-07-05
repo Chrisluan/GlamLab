@@ -1,23 +1,16 @@
 import { createContext, lazy, useState } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import options from "../Components/Sidebar/configs/Options.json";
-
-//Pages
-import Appointments from "../Pages/Appointments";
-import Dashboard from "../Pages/Dashboard";
-import Clients from "../Pages/Clients";
-import Finances from "../Pages/Finances";
-import Professionals from "../Pages/Professionals";
 import NoPage from "../Pages/NoPage";
-import Configuration from "../Pages/Configuration";
+
 const pagesComponents = {
-  Appointments: lazy(() => import ("../Pages/Appointments")),
-  NoPage: lazy(() => import ("../Pages/NoPage")),
-  Dashboard: lazy(() => import ("../Pages/Dashboard")),
-  Finances: lazy(() => import ("../Pages/Finances")),
-  Professionals: lazy(() => import ("../Pages/Professionals")),
-  Clients: lazy(() => import ("../Pages/Clients")),
-  Configuration: lazy(() => import ("../Pages/Configuration")),
+  Appointments: lazy(() => import("../Pages/Appointments")),
+  NoPage: lazy(() => import("../Pages/NoPage")),
+  Dashboard: lazy(() => import("../Pages/Dashboard")),
+  Finances: lazy(() => import("../Pages/Finances")),
+  Professionals: lazy(() => import("../Pages/Professionals")),
+  Clients: lazy(() => import("../Pages/Clients")),
+  Configuration: lazy(() => import("../Pages/Configuration")),
 };
 
 const NavigationContext = createContext();
@@ -42,8 +35,7 @@ const NavigationProvider = ({ children }) => {
     }
   };
 
-  const SelectedPageComponent =
-    pagesComponents[CurrentPageProps?.page] || NoPage;
+  const SelectedPageComponent = pagesComponents[CurrentPageProps?.page] || NoPage;
 
   return (
     <NavigationContext.Provider

@@ -20,7 +20,7 @@ import {
 const EditingModal = ({ popIn, setPopIn, appointment }) => {
   const [form, setForm] = useState({});
   const [sending, setSending] = useState(false);
-  const { clients } = useData();
+  const { clients, professionals, UpdateAllData } = useData();
   const toast = useToast();
   const HandleFormChanges = (e) => {
     //Não vou mentir, essa função foi feita por IA, só dei o nome 👁️🫦👁️
@@ -92,6 +92,25 @@ const EditingModal = ({ popIn, setPopIn, appointment }) => {
                 })}
               </Select>
             </FormControl>
+            <FormControl>
+              <Select
+                name="professional"
+                title="professional"
+                onChange={HandleFormChanges}
+              >
+                {professionals.map((professional) => {
+                  return (
+                    <option
+                      defaultValue={null}
+                      key={professional._id}
+                      value={JSON.stringify(professional)}
+                    >
+                      {professional.name}
+                    </option>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>
@@ -103,7 +122,7 @@ const EditingModal = ({ popIn, setPopIn, appointment }) => {
               const response = await EditAppointment(
                 form._id,
                 formWithoutId
-              ).then(() => {
+              ).then(async () => {
                 toast({
                   title: `Agendamento de ${form?.client.name} editado com Sucesso`,
                   status: "success",
@@ -114,6 +133,7 @@ const EditingModal = ({ popIn, setPopIn, appointment }) => {
                 });
                 setPopIn(false);
                 setSending(false);
+                await UpdateAllData();
               });
             }}
             mr={3}

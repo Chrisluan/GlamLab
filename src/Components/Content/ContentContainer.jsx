@@ -4,9 +4,10 @@ import { useContext, Suspense, lazy } from "react";
 import { NavigationContext } from "../../Context/NavigationContext";
 import LoadingScreen from "../Global/LoadingScreen";
 import { useModal } from "../../Context/ModalsContext";
+import { form } from "framer-motion/client";
 export const ContentContainer = ({ children }) => {
   const { CurrentPageProps } = useContext(NavigationContext);
-  const {openEditModal, create}= useModal();
+  const {openEditModal, openCreateModal}= useModal();
   return (
     <Flex
       sx={{
@@ -29,7 +30,7 @@ export const ContentContainer = ({ children }) => {
       >
         <Heading>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"}  gap={2}>
-          <Button onClick={()=>openEditModal()}>Agendar</Button>
+          <Button onClick={()=>openCreateModal(form)}>Agendar</Button>
         </Flex>
       </Flex>
       <Flex
