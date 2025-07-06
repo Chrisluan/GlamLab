@@ -13,6 +13,8 @@ import {
   FormLabel,
   Flex,
   Input,
+  Text,
+  Link
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
@@ -21,7 +23,7 @@ import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointment
 const CreateModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
   const [sending, setSending] = useState(false);
-  const { professionals, clients, UpdateAllData } = useData();
+  const { professionals, clients, services, UpdateAllData } = useData();
   const toast = useToast();
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
         position: "top-right",
         size: "sm",
       });
-      
+
       setPopIn(false);
       setSending(false);
     });
@@ -95,15 +97,19 @@ const CreateModal = ({ popIn, setPopIn }) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <form>
-            <Flex>
+          <form style={{
+            display:"flex",
+            flexDirection:"column",
+            gap:10
+          }}>
+            <Flex gap={5}>
               <FormControl
                 isRequired
                 onLoad={HandleFormChanges}
                 onChange={HandleFormChanges}
               >
                 <FormLabel>Cliente</FormLabel>
-                <Select name="client" type="name" title="nome">
+                <Select name="client" title="nome">
                   {clients.map((client) => {
                     return (
                       <option key={client._id} value={JSON.stringify(client)}>
@@ -115,7 +121,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
               </FormControl>
 
               <FormControl>
-                <FormLabel>Data</FormLabel>
+                <FormLabel>Data do agendamento</FormLabel>
                 <Input
                   name="date"
                   title="date"
@@ -140,6 +146,38 @@ const CreateModal = ({ popIn, setPopIn }) => {
                 })}
               </Select>
             </FormControl>
+            <Flex gap={5}>
+              <FormControl flex={2} onChange={HandleFormChanges}>
+                <FormLabel>Serviço</FormLabel>
+                <Select name="services" title="services">
+                  {services.map((service) => {
+                    return (
+                      <option
+                        defaultValue={JSON.stringify(service)}
+                        key={services._id}
+                        value={JSON.stringify(service)}
+                      >
+                        {service.name}
+                      </option>
+                    );
+                  })}
+                </Select>
+                <Button variant="outline">
+                    Adicionar mais serviços...
+                </Button>
+              </FormControl>
+              <FormControl flex={1} onChange={HandleFormChanges}>
+                <FormLabel>Situação</FormLabel>
+                <Select name="status" title="status">
+                  <option defaultValue={"pending"} value={"pending"}>
+                    Pendente
+                  </option>
+                  <option defaultValue={"confirmed"} value={"confirmed"}>
+                    Confirmado
+                  </option>
+                </Select>
+              </FormControl>
+            </Flex>
           </form>
         </ModalBody>
         <ModalFooter>

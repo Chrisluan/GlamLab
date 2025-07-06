@@ -11,14 +11,13 @@ function App() {
 
   return (
     <Flex height={"100dvh"}>
-      <ModalProvider>
+      
         <Sidebar />
         <ContentContainer>
           <Suspense fallback={<LoadingScreen></LoadingScreen>}>
             <SelectedPageComponent></SelectedPageComponent>
           </Suspense>
         </ContentContainer>
-      </ModalProvider>
     </Flex>
   );
 }

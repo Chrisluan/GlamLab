@@ -12,9 +12,9 @@ createRoot(document.getElementById("root")).render(
       <NavigationProvider>
         <Suspense fallback={() => <Spinner></Spinner>}>
           <DataProvider>
-            
+            <ModalProvider>
               <App />
-            
+            </ModalProvider>
           </DataProvider>
         </Suspense>
       </NavigationProvider>

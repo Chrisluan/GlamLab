@@ -53,7 +53,8 @@ const AppointmentCard = ({
           >
             {appointment.client?.name}
           </Text>
-          <Text aria-label="services">{appointment.service?.name}</Text>
+          
+          <Text aria-label="services">{appointment.services?.name}</Text>
         </Flex>
         <Flex gap={5}>
           <Flex>
