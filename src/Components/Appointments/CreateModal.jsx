@@ -16,14 +16,49 @@ import {
   Text,
   Link,
   Box,
+  InputGroup,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
 import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
 
+const scrollToAppointment = (newId) =>
+  setTimeout(() => {
+    const el = document.getElementById(newId);
+    if (el) {
+      if (!document.getElementById("blink-style")) {
+        const style = document.createElement("style");
+        style.id = "blink-style";
+        style.textContent = `
+                    @keyframes blink {
+                      0% { background-color: #E8E3D9; }
+                      50% { background-color: transparent; }
+                      100% { background-color: #E8E3D9; }
+                    }
+
+                    .blink {
+                      animation: blink 1s ease-in-out 3;
+                    }
+                  `;
+        document.head.appendChild(style);
+      }
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+      el.classList.remove("blink");
+      void el.offsetWidth; // força reflow para reiniciar a animação
+      el.classList.add("blink");
+    } else {
+      console.warn("Elemento não encontrado:", newId);
+    }
+  }, 100);
+
 const CreateModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
+  const [selectedServices, setSelectedServices] = useState([
+    { service: "", price: 0 },
+  ]);
   const [sending, setSending] = useState(false);
+  const [appointmentValue, setAppointmentValue] = useState(null);
   const { professionals, clients, services, UpdateAllData } = useData();
   const toast = useToast();
 
@@ -55,6 +90,47 @@ const CreateModal = ({ popIn, setPopIn }) => {
       return updatedForm;
     });
   };
+  const handleServiceChange = (e, index) => {
+    const service = JSON.parse(e.target.value);
+    const price = service.minimumPrice || 0;
+
+    const updatedServices = [...selectedServices];
+    updatedServices[index] = {
+      service: e.target.value,
+      price,
+    };
+    setSelectedServices(updatedServices);
+
+    // Atualiza o form principal
+    HandleFormChanges({
+      target: {
+        name: `services.${index}`,
+        value: e.target.value,
+      },
+    });
+
+    HandleFormChanges({
+      target: {
+        name: `servicesPrice.${index}`,
+        value: price,
+      },
+    });
+  };
+
+  const handlePriceChange = (e, index) => {
+    const value = parseFloat(e.target.value) || 0;
+
+    const updatedServices = [...selectedServices];
+    updatedServices[index].price = value;
+    setSelectedServices(updatedServices);
+
+    HandleFormChanges({
+      target: {
+        name: `servicesPrice.${index}`,
+        value,
+      },
+    });
+  };
   const SendToDb = async () => {
     setSending(true);
     const { ...formWithoutId } = form;
@@ -78,38 +154,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
             boxShadow="md"
             cursor="pointer"
             onClick={() => {
-              console.log("Toast clicado!");
-              console.log("ID do novo agendamento:", newId);
-
-              setTimeout(() => {
-                const el = document.getElementById(newId);
-                if (el) {
-                  if (!document.getElementById("blink-style")) {
-                    const style = document.createElement("style");
-                    style.id = "blink-style";
-                    style.textContent = `
-    @keyframes blink {
-      0% { background-color: #E8E3D9; }
-      50% { background-color: transparent; }
-      100% { background-color: #E8E3D9; }
-    }
-
-    .blink {
-      animation: blink 1s ease-in-out 3;
-    }
-  `;
-                    document.head.appendChild(style);
-                  }
-                  el.scrollIntoView({ behavior: "smooth", block: "center" });
-
-                  el.classList.remove("blink");
-                  void el.offsetWidth; // força reflow para reiniciar a animação
-                  el.classList.add("blink");
-                } else {
-                  console.warn("Elemento não encontrado:", newId);
-                }
-              }, 100);
-
+              scrollToAppointment(newId);
               onClose();
             }}
           >
@@ -127,7 +172,10 @@ const CreateModal = ({ popIn, setPopIn }) => {
         description: e.message,
       });
     }
-
+    setForm({});
+    setSelectedServices([{ service: "", price: 0 }]);
+    setAppointmentValue(null);
+    
     setSending(false);
   };
 
@@ -155,16 +203,17 @@ const CreateModal = ({ popIn, setPopIn }) => {
             }}
           >
             <Flex gap={5}>
-              <FormControl
-                isRequired
-                onLoad={HandleFormChanges}
-                onChange={HandleFormChanges}
-              >
+              <FormControl isRequired onChange={HandleFormChanges}>
                 <FormLabel>Cliente</FormLabel>
                 <Select name="client" title="nome">
+                  <option value={null}>Selecione um cliente</option>
                   {clients.map((client) => {
                     return (
-                      <option key={client._id} value={JSON.stringify(client)}>
+                      <option
+                        defaultValue={JSON.stringify(client)}
+                        key={client._id}
+                        value={JSON.stringify(client)}
+                      >
                         {client.name}
                       </option>
                     );
@@ -199,43 +248,74 @@ const CreateModal = ({ popIn, setPopIn }) => {
               </Select>
             </FormControl>
             <Flex gap={5}>
-              <FormControl flex={2} onChange={HandleFormChanges}>
-                <FormLabel>Serviço</FormLabel>
-                <Select name="services" title="services">
-                  {services.map((service) => {
-                    return (
-                      <option
-                        defaultValue={JSON.stringify(service)}
-                        key={services._id}
-                        value={JSON.stringify(service)}
+              <FormControl isRequired flex={2}>
+                {selectedServices.map((item, index) => (
+                  <>
+                    <FormLabel p={0} mb={0}>Serviço(s)</FormLabel>
+                    <Flex alignItems={"center"} key={index} gap={3}>
+                      <Select
+                        flex={2}
+                        name={`services.${index}`}
+                        value={item.service}
+                        onChange={(e) => handleServiceChange(e, index)}
                       >
-                        {service.name}
-                      </option>
-                    );
-                  })}
-                </Select>
-                <Button variant="outline">Adicionar mais serviços...</Button>
-              </FormControl>
-              <FormControl flex={1} onChange={HandleFormChanges}>
-                <FormLabel>Situação</FormLabel>
-                <Select name="status" title="status">
-                  <option defaultValue={"pending"} value={"pending"}>
-                    Pendente
-                  </option>
-                  <option defaultValue={"confirmed"} value={"confirmed"}>
-                    Confirmado
-                  </option>
-                </Select>
+                        <option value="">Selecione um serviço</option>
+                        {services.map((service) => (
+                          <option
+                            key={service._id}
+                            value={JSON.stringify(service)}
+                          >
+                            {service.name}
+                          </option>
+                        ))}
+                      </Select>
+                      <FormControl flex={0.5}>
+                        <FormLabel>Valor</FormLabel>
+                        <InputGroup>
+                          <Input
+                            name={`servicesPrice.${index}`}
+                            type="number"
+                            value={item.price}
+                            onChange={(e) => handlePriceChange(e, index)}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </Flex>
+                  </>
+                ))}
+
+                <Button
+                  variant="outline"
+                  onClick={() =>
+                    setSelectedServices([
+                      ...selectedServices,
+                      { service: "", price: 0 },
+                    ])
+                  }
+                >
+                  Adicionar mais serviços...
+                </Button>
               </FormControl>
             </Flex>
+            <FormControl flex={1} onChange={HandleFormChanges}>
+              <FormLabel>Situação</FormLabel>
+              <Select name="status" title="status">
+                <option defaultValue={"pending"} value={"pending"}>
+                  Pendente
+                </option>
+                <option defaultValue={"confirmed"} value={"confirmed"}>
+                  Confirmado
+                </option>
+              </Select>
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button isLoading={sending} onClick={() => SendToDb()} mr={3}>
-            Confirmar
-          </Button>
           <Button variant="secondary" onClick={() => setPopIn(false)}>
             Cancelar
+          </Button>
+          <Button isLoading={sending} onClick={() => SendToDb()} mr={3}>
+            Confirmar
           </Button>
         </ModalFooter>
       </ModalContent>

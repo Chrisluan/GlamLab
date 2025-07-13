@@ -7,7 +7,7 @@ import { useModal } from "../../Context/ModalsContext";
 import { form } from "framer-motion/client";
 export const ContentContainer = ({ children }) => {
   const { CurrentPageProps } = useContext(NavigationContext);
-  const {openEditModal, openCreateModal}= useModal();
+  const { openEditModal, openCreateModal } = useModal();
   return (
     <Flex
       sx={{
@@ -30,14 +30,12 @@ export const ContentContainer = ({ children }) => {
         boxShadow={"0px 10px 15px -3px rgba(0,0,0,0.1)"}
       >
         <Heading>{CurrentPageProps.title}</Heading>
-        <Flex flexDir={"row"}  gap={2}>
-          <Button onClick={()=>openCreateModal(form)}>Agendar</Button>
+        <Flex flexDir={"row"} gap={2}>
+          {renderPageButton({ openCreateModal, openEditModal })}
         </Flex>
       </Flex>
       <Flex
-      
         sx={{
-          
           overflow: "auto",
           bg: "brand.100",
           width: "100%",
@@ -52,4 +50,31 @@ export const ContentContainer = ({ children }) => {
       </Flex>
     </Flex>
   );
+};
+const renderPageButton = (actions) => {
+  const { CurrentPageProps } = useContext(NavigationContext);
+  switch (CurrentPageProps.title) {
+    case "Agendamentos":
+      return (
+        <Button colorScheme="blue" onClick={() => actions.openCreateModal()}>
+          Agendar
+        </Button>
+      );
+    case "Clientes":
+      return (
+        <Button colorScheme="green" onClick={() => openCreateClientModal()}>
+          Novo Cliente
+        </Button>
+      );
+
+    case "Serviços":
+      return (
+        <Button colorScheme="purple" onClick={() => openCreateServiceModal()}>
+          Novo Serviço
+        </Button>
+      );
+
+    default:
+      return null;
+  }
 };

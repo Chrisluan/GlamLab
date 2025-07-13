@@ -11,16 +11,17 @@ import {
   Td,
   Tfoot,
   Flex,
+  Button,
 } from "@chakra-ui/react";
 import { useData } from "../Context/DataContext";
 export const Services = () => {
   const { services } = useData();
 
   return (
-    <TableContainer  w={"100%"}>
+    <TableContainer w={"100%"}>
       <Table size="sm" variant={"striped"}>
         <TableCaption>Todos os serviços cadastrados</TableCaption>
-        <Thead >
+        <Thead>
           <Tr>
             <Th>Serviço</Th>
             <Th>Preço Minimo</Th>
@@ -34,6 +35,24 @@ export const Services = () => {
                 <Td>{item.name}</Td>
                 <Td>R$ {item.minimumPrice},00</Td>
                 <Td isNumeric>{item.defaultComission}%</Td>
+                <Td>
+                  <Flex gap={2}>
+                    <Button
+                      size="sm"
+                      colorScheme="blue"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      size="sm"
+                      colorScheme="red"
+                      onClick={() => handleDelete(item._id)}
+                    >
+                      Deletar
+                    </Button>
+                  </Flex>
+                </Td>
               </Tr>
             );
           })}
