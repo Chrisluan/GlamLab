@@ -19,6 +19,7 @@ import { FaEdit } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 const AppointmentCard = ({
+  id,
   appointment,
   setEditingAppointments,
   OnCancel,
@@ -27,6 +28,7 @@ const AppointmentCard = ({
   const { openEditModal } = useModal();
   return (
     <Flex
+      id={appointment._id}
       fontFamily={"Segoe UI, Tahoma, Geneva, Verdana, sans-serif"}
       width={"100%"}
       height={"fit-content"}
@@ -53,12 +55,12 @@ const AppointmentCard = ({
           >
             {appointment.client?.name}
           </Text>
-          
+
           <Text aria-label="services">{appointment.services?.name}</Text>
         </Flex>
         <Flex gap={5}>
           <Flex>
-            <Text>Profissional: {appointment.professional.name}</Text>
+            <Text>Profissional: {appointment.professional?.name}</Text>
           </Flex>
           {/*Date*/}
           <Flex alignItems={"center"} gap={1}>

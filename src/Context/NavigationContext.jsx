@@ -10,7 +10,7 @@ const pagesComponents = {
   Finances: lazy(() => import("../Pages/Finances")),
   Professionals: lazy(() => import("../Pages/Professionals")),
   Clients: lazy(() => import("../Pages/Clients")),
-  Configuration: lazy(() => import("../Pages/Configuration")),
+  Services: lazy(() => import("../Pages/Services")),
 };
 
 const NavigationContext = createContext();

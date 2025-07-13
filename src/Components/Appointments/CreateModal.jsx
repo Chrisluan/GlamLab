@@ -14,7 +14,8 @@ import {
   Flex,
   Input,
   Text,
-  Link
+  Link,
+  Box,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
@@ -56,31 +57,80 @@ const CreateModal = ({ popIn, setPopIn }) => {
   };
   const SendToDb = async () => {
     setSending(true);
-    const { _id, ...formWithoutId } = form;
-    console.log(formWithoutId);
-    const response = await CreateAppointment(formWithoutId).then(() => {
+    const { ...formWithoutId } = form;
+
+    try {
+      const response = await CreateAppointment(formWithoutId);
+      const newId = response.insertedId;
+
+      await UpdateAllData();
+
       toast({
-        title: `Agendamento de ${form?.client.name} editado com Sucesso`,
-        status: "success",
-        duration: 2000,
+        duration: 6000000,
         isClosable: true,
         position: "top-right",
-        size: "sm",
+        render: ({ onClose }) => (
+          <Box
+            p={4}
+            bg="green.500"
+            color="white"
+            borderRadius="md"
+            boxShadow="md"
+            cursor="pointer"
+            onClick={() => {
+              console.log("Toast clicado!");
+              console.log("ID do novo agendamento:", newId);
+
+              setTimeout(() => {
+                const el = document.getElementById(newId);
+                if (el) {
+                  if (!document.getElementById("blink-style")) {
+                    const style = document.createElement("style");
+                    style.id = "blink-style";
+                    style.textContent = `
+    @keyframes blink {
+      0% { background-color: #E8E3D9; }
+      50% { background-color: transparent; }
+      100% { background-color: #E8E3D9; }
+    }
+
+    .blink {
+      animation: blink 1s ease-in-out 3;
+    }
+  `;
+                    document.head.appendChild(style);
+                  }
+                  el.scrollIntoView({ behavior: "smooth", block: "center" });
+
+                  el.classList.remove("blink");
+                  void el.offsetWidth; // força reflow para reiniciar a animação
+                  el.classList.add("blink");
+                } else {
+                  console.warn("Elemento não encontrado:", newId);
+                }
+              }, 100);
+
+              onClose();
+            }}
+          >
+            Agendamento de {form?.client.name} criado com sucesso!
+          </Box>
+        ),
       });
 
       setPopIn(false);
-      setSending(false);
-    });
-    try {
-      await UpdateAllData();
     } catch (e) {
+      console.error(e);
       toast({
-        title: "Erro ao atualizar dados locais",
+        title: "Erro ao criar agendamento",
         status: "error",
         description: e.message,
       });
     }
+
+    setSending(false);
   };
+
   return (
     <Modal
       blockScrollOnMount={false}
@@ -97,11 +147,13 @@ const CreateModal = ({ popIn, setPopIn }) => {
         <ModalCloseButton />
 
         <ModalBody>
-          <form style={{
-            display:"flex",
-            flexDirection:"column",
-            gap:10
-          }}>
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
+            }}
+          >
             <Flex gap={5}>
               <FormControl
                 isRequired
@@ -162,9 +214,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
                     );
                   })}
                 </Select>
-                <Button variant="outline">
-                    Adicionar mais serviços...
-                </Button>
+                <Button variant="outline">Adicionar mais serviços...</Button>
               </FormControl>
               <FormControl flex={1} onChange={HandleFormChanges}>
                 <FormLabel>Situação</FormLabel>

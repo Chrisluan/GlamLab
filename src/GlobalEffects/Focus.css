@@ -1,0 +1,15 @@
+@keyframes blink {
+  0% {
+    background-color: "brand.400";
+  }
+  50% {
+    background-color: transparent;
+  }
+  100% {
+    background-color: initial;
+  }
+}
+
+.blink {
+  animation: blink 0.5s ease-in-out 3;
+}

@@ -8,4 +8,23 @@ const FetchAllServices = async () => {
     console.error("Erro ao buscar agendamentos:", e);
   }
 };
-export { FetchAllServices };
+const CreateNewService = async (data) => {
+  try {
+    console.log("Requiring Services");
+    const response = await fetch(
+      "https://glamlab-backend.vercel.app/appointments",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    return (await response).json;
+  } catch (e) {
+    console.error("Erro ao buscar agendamentos:", e);
+  }
+};
+export { FetchAllServices, CreateNewService };

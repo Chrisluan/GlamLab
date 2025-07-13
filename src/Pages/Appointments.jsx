@@ -65,7 +65,7 @@ export const Appointments = () => {
               new Date().toDateString()
           )
           .map((appointment, i) => (
-            <AppointmentCard key={i} appointment={appointment} />
+            <AppointmentCard id={i} key={i} appointment={appointment} />
           ))}
       </Suspense>
     </Flex>

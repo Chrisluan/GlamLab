@@ -27,6 +27,7 @@ export const ContentContainer = ({ children }) => {
           borderRadius: "10px",
         }}
         padding={2}
+        boxShadow={"0px 10px 15px -3px rgba(0,0,0,0.1)"}
       >
         <Heading>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"}  gap={2}>
@@ -34,7 +35,9 @@ export const ContentContainer = ({ children }) => {
         </Flex>
       </Flex>
       <Flex
+      
         sx={{
+          
           overflow: "auto",
           bg: "brand.100",
           width: "100%",
@@ -43,6 +46,7 @@ export const ContentContainer = ({ children }) => {
           p: 2,
           borderRadius: "10px",
         }}
+        boxShadow={"0px 10px 15px -3px rgba(0,0,0,0.1)"}
       >
         {children}
       </Flex>
