@@ -51,7 +51,7 @@ const FetchAllAppointments = async () => {
 };
 const DeleteAppointment = async (id) => {
   try {
-    const response = await fetch(`http://localhost:3000/appointments/${id}`, {
+    const response = await fetch(`https://glamlab-backend.vercel.app/appointments/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
