@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import EditingModal from "../Components/Appointments/EditingModal";
-import CreateModal from "../Components/Appointments/CreateModal";
+import EditingModal from "../Components/Appointments/EditingAppointmentModal";
+import CreateModal from "../Components/Appointments/CreateAppointmentModal";
 // Importe os outros modais se existirem
 
 const ModalContext = createContext(null);

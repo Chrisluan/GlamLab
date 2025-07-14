@@ -3,6 +3,7 @@ import {
   CreateAppointment,
   EditAppointment,
   FetchAllAppointments,
+  DeleteAppointment
 } from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
 import { FetchAllClients } from "./DBConnectionMethods/Clients";
@@ -60,4 +61,5 @@ export {
   useData,
   CreateAppointment,
   EditAppointment,
+  DeleteAppointment,
 };

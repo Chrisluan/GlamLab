@@ -23,7 +23,6 @@ const AppointmentCard = ({
   OnConfirm,
 }) => {
   const { openEditModal } = useModal();
-
   const formattedTime = new Date(appointment.date).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
@@ -51,7 +50,7 @@ const AppointmentCard = ({
       fontSize="sm"
       _hover={{ bg: "brand.200" }}
     >
-      <Flex direction="column" gap={1}>
+      <Flex direction="column" width={"100%"} gap={1}>
         <Flex gap={2} wrap="wrap" align="center">
           <Text fontWeight="600">{appointment.client?.name}</Text>
           <Text color="gray.600">
@@ -61,7 +60,7 @@ const AppointmentCard = ({
           </Text>
         </Flex>
 
-        <Flex gap={2} wrap="wrap" fontSize="xs" color="gray.600">
+        <Flex gap={2} width={"100%"} wrap="wrap" fontSize="xs" color="gray.600">
           <Text>Prof.: {appointment.professional?.name}</Text>
           <Text>
             {formattedDate} •{" "}
@@ -76,7 +75,7 @@ const AppointmentCard = ({
         </Flex>
       </Flex>
 
-      <Flex>
+      <Flex width={"100%"} justifyContent="end">
         <DayTags date={appointment.date}></DayTags>
       </Flex>
       <Menu>
@@ -124,11 +123,9 @@ const DayTags = ({ date }) => {
       ? "Hoje"
       : todayDay + 1 === day && month === todayMonth && year === todayYear
       ? "Amanhã"
+      : todayDay - 1 === day && month === todayMonth && year === todayYear
+      ? "Ontem"
       : `${dayOfWeek} ${formattedDate}`;
-
-      
-
-      
   return (
     <Box
       display="flex"
@@ -136,7 +133,14 @@ const DayTags = ({ date }) => {
       alignItems="center"
       justifyContent="center"
       paddingInline={2}
-      bg={period === "Hoje" ? "green.500" : period === "Amanhã" ? "blue.500" : "red.500"}
+      bg={
+        period === "Hoje"
+          ? "green.500"
+          : period === "Amanhã"
+          ? "blue.500"
+          : period === "Ontem" ? "red.500"
+          : "gray.500"
+      }
       borderRadius="md"
     >
       <Text fontSize="12px" fontWeight="bold" color="white">

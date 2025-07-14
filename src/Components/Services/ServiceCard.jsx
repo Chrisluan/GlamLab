@@ -10,23 +10,32 @@ import {
   Thead,
   Td,
   Tfoot,
+  Flex,
+  Button,
+  Text,
 } from "@chakra-ui/react";
-import { useData } from "../Context/DataContext";
-export const ServiceCard = () => {
-
-  const {services} = useData();
+export const ServiceCard = ({item}) => {
+  
   return (
-    <TableContainer>
-      <Table size="sm">
-        <Thead>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Thead>
-      </Table>
-    </TableContainer>
+    <Tr key={item._id}>
+      <Td>{item.name}</Td>
+      <Td>R$ {item.minimumPrice},00</Td>
+      <Td isNumeric>{item.defaultComission}%</Td>
+      <Td>
+        <Flex gap={2}>
+          <Button size="sm" colorScheme="blue" onClick={() => handleEdit(item)}>
+            Editar
+          </Button>
+          <Button
+            size="sm"
+            colorScheme="red"
+            onClick={() => handleDelete(item._id)}
+          >
+            Deletar
+          </Button>
+        </Flex>
+      </Td>
+    </Tr>
   );
 };
 export default ServiceCard;

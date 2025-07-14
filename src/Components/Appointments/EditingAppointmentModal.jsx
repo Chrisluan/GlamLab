@@ -17,7 +17,7 @@ import {
   EditAppointment
 } from "../../Context/DBConnectionMethods/Appointments";
 
-const EditingModal = ({ popIn, setPopIn, appointment }) => {
+const EditingAppointmentModal = ({ popIn, setPopIn, appointment }) => {
   const [form, setForm] = useState({});
   const [sending, setSending] = useState(false);
   const { clients, professionals, UpdateAllData } = useData();
@@ -148,4 +148,4 @@ const EditingModal = ({ popIn, setPopIn, appointment }) => {
     </Modal>
   );
 };
-export default EditingModal;
+export default EditingAppointmentModal;

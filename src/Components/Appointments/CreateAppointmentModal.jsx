@@ -52,7 +52,7 @@ const scrollToAppointment = (newId) =>
     }
   }, 100);
 
-const CreateModal = ({ popIn, setPopIn }) => {
+const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
   const [selectedServices, setSelectedServices] = useState([
     { service: "", price: 0 },
@@ -175,7 +175,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
     setForm({});
     setSelectedServices([{ service: "", price: 0 }]);
     setAppointmentValue(null);
-    
+
     setSending(false);
   };
 
@@ -234,6 +234,7 @@ const CreateModal = ({ popIn, setPopIn }) => {
             <FormControl onChange={HandleFormChanges}>
               <FormLabel>Profissional</FormLabel>
               <Select name="professional" title="professional">
+                <option value={null}>Selecione um profissional</option>
                 {professionals.map((professional) => {
                   return (
                     <option
@@ -251,7 +252,9 @@ const CreateModal = ({ popIn, setPopIn }) => {
               <FormControl isRequired flex={2}>
                 {selectedServices.map((item, index) => (
                   <>
-                    <FormLabel p={0} mb={0}>Serviço(s)</FormLabel>
+                    <FormLabel p={0} mb={0}>
+                      Serviço(s)
+                    </FormLabel>
                     <Flex alignItems={"center"} key={index} gap={3}>
                       <Select
                         flex={2}
@@ -322,4 +325,4 @@ const CreateModal = ({ popIn, setPopIn }) => {
     </Modal>
   );
 };
-export default CreateModal;
+export default CreateAppointmentModal;

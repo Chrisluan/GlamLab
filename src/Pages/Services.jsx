@@ -14,6 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useData } from "../Context/DataContext";
+import ServiceCard from "../Components/Services/ServiceCard";
 export const Services = () => {
   const { services } = useData();
 
@@ -31,29 +32,9 @@ export const Services = () => {
         <Tbody>
           {services.map((item, i) => {
             return (
-              <Tr key={item._id + i}>
-                <Td>{item.name}</Td>
-                <Td>R$ {item.minimumPrice},00</Td>
-                <Td isNumeric>{item.defaultComission}%</Td>
-                <Td>
-                  <Flex gap={2}>
-                    <Button
-                      size="sm"
-                      colorScheme="blue"
-                      onClick={() => handleEdit(item)}
-                    >
-                      Editar
-                    </Button>
-                    <Button
-                      size="sm"
-                      colorScheme="red"
-                      onClick={() => handleDelete(item._id)}
-                    >
-                      Deletar
-                    </Button>
-                  </Flex>
-                </Td>
-              </Tr>
+              <ServiceCard item={item} key={item._id + i}>
+
+              </ServiceCard>
             );
           })}
         </Tbody>

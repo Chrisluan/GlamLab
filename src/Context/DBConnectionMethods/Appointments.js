@@ -49,14 +49,15 @@ const FetchAllAppointments = async () => {
     console.error("Erro ao buscar agendamentos:", e);
   }
 };
-const DeleteAppointment = async () => {
+const DeleteAppointment = async (id) => {
   try {
-    const response = await fetch(
-      "https://glamlab-backend.vercel.app/appointments",
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`http://localhost:3000/appointments/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
     return await response.json();
   } catch (e) {
     console.log("Erro ao deletar agendamento:", e);

@@ -62,7 +62,7 @@ const renderPageButton = (actions) => {
       );
     case "Clientes":
       return (
-        <Button colorScheme="green" onClick={() => openCreateClientModal()}>
+        <Button colorScheme="green" onClick={() => actions.openCreateModal()}>
           Novo Cliente
         </Button>
       );
