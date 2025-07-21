@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from "react";
 import EditingModal from "../Components/Appointments/EditingAppointmentModal";
 import CreateModal from "../Components/Appointments/CreateAppointmentModal";
+import CreateClientModal from "../Components/Clients/CreateClientModal";
 // Importe os outros modais se existirem
 
 const ModalContext = createContext(null);
@@ -19,6 +20,8 @@ export const ModalProvider = ({ children }) => {
     message: "",
   });
   const [createModal, setCreateModal] = useState({ open: false, data: null });
+
+  const [createClientModal, setCreateClientModal] = useState({ open: false });
 
   const openEditModal = (appointment) => {
     setEditingModal({ open: true, data: appointment });
@@ -51,6 +54,13 @@ export const ModalProvider = ({ children }) => {
   const closeMessageModal = () => {
     setMessageModal({ open: false, title: "", message: "" });
   };
+  const openCreateClientModal = () => {
+    
+    setCreateClientModal({ open: true });
+  }
+  const closeCreateClientModal = () => {
+    setCreateClientModal({ open: false });
+  }
 
   const contextValue = {
     openEditModal,
@@ -61,11 +71,13 @@ export const ModalProvider = ({ children }) => {
     closeWarningModal,
     openMessageModal,
     closeMessageModal,
+    openCreateClientModal,
+    closeCreateClientModal,
   };
 
   return (
     <ModalContext.Provider value={contextValue}>
-      {children}
+      
       <EditingModal
         popIn={editingModal.open}
         setPopIn={closeEditModal}
@@ -75,6 +87,13 @@ export const ModalProvider = ({ children }) => {
         popIn={createModal.open}
         setPopIn={closeCreateModal}
       />
+      <CreateClientModal
+      
+        popIn={createClientModal.open}
+        setPopIn={closeCreateClientModal}
+        // Pass any additional props needed for CreateClientModal
+      />
+      {children}
       {/* Warning Modal */}
       {/* <WarningModal
         isOpen={warningModal.open}

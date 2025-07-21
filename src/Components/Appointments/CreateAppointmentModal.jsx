@@ -21,6 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
 import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
+import { useModal } from "../../Context/ModalsContext";
 
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
@@ -52,6 +53,11 @@ const scrollToAppointment = (newId) =>
     }
   }, 100);
 
+
+  
+
+  
+
 const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
   const [selectedServices, setSelectedServices] = useState([
@@ -60,6 +66,7 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   const [sending, setSending] = useState(false);
   const [appointmentValue, setAppointmentValue] = useState(null);
   const { professionals, clients, services, UpdateAllData } = useData();
+  const {openCreateClientModal} = useModal();
   const toast = useToast();
 
   useEffect(() => {
@@ -219,6 +226,15 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                     );
                   })}
                 </Select>
+                <Text sx={{
+                  color: 'teal.500',
+                  cursor: 'pointer',
+                  textDecoration: 'underline',
+                  fontSize: 'sm',
+                  mt: 1,
+                }} onClick={async ()=> {
+                  openCreateClientModal();
+                }}>Novo cliente</Text>
               </FormControl>
 
               <FormControl>

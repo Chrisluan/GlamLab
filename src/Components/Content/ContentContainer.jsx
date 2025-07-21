@@ -7,7 +7,7 @@ import { useModal } from "../../Context/ModalsContext";
 import { form } from "framer-motion/client";
 export const ContentContainer = ({ children }) => {
   const { CurrentPageProps } = useContext(NavigationContext);
-  const { openEditModal, openCreateModal } = useModal();
+  const { openEditModal, openCreateModal, openCreateClientModal } = useModal();
   return (
     <Flex
       sx={{
@@ -31,7 +31,7 @@ export const ContentContainer = ({ children }) => {
       >
         <Heading>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"} gap={2}>
-          {renderPageButton({ openCreateModal, openEditModal })}
+          {renderPageButton({ openCreateModal, openEditModal, openCreateClientModal })}
         </Flex>
       </Flex>
       <Flex
@@ -62,7 +62,7 @@ const renderPageButton = (actions) => {
       );
     case "Clientes":
       return (
-        <Button colorScheme="green" onClick={() => actions.openCreateModal()}>
+        <Button colorScheme="green" onClick={() => actions.openCreateClientModal()}>
           Novo Cliente
         </Button>
       );
