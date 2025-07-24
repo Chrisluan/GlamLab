@@ -17,6 +17,7 @@ import {
   Link,
   Box,
   InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
@@ -65,7 +66,7 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   ]);
   const [sending, setSending] = useState(false);
   const [appointmentValue, setAppointmentValue] = useState(null);
-  const { professionals, clients, services, UpdateAllData } = useData();
+  const { professionals, clients, services, UpdateAppointments } = useData();
   const {openCreateClientModal} = useModal();
   const toast = useToast();
 
@@ -146,7 +147,7 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
       const response = await CreateAppointment(formWithoutId);
       const newId = response.insertedId;
 
-      await UpdateAllData();
+      await UpdateAppointments();
 
       toast({
         duration: 6000000,
@@ -267,11 +268,11 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
             <Flex gap={5}>
               <FormControl isRequired flex={2}>
                 {selectedServices.map((item, index) => (
-                  <>
+                  <Flex flexDir={"column"} key={index} gap={2}>
                     <FormLabel p={0} mb={0}>
-                      Serviço(s)
+                      Serviço {index + 1}
                     </FormLabel>
-                    <Flex alignItems={"center"} key={index} gap={3}>
+                    <Flex gap={2} alignItems={"center"} key={index}>
                       <Select
                         flex={2}
                         name={`services.${index}`}
@@ -289,18 +290,22 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                         ))}
                       </Select>
                       <FormControl flex={0.5}>
-                        <FormLabel>Valor</FormLabel>
+                       
                         <InputGroup>
+                        <InputLeftAddon>
+                          <Text>R$</Text>
+                        </InputLeftAddon>
                           <Input
                             name={`servicesPrice.${index}`}
                             type="number"
+                            
                             value={item.price}
                             onChange={(e) => handlePriceChange(e, index)}
                           />
                         </InputGroup>
                       </FormControl>
                     </Flex>
-                  </>
+                  </Flex>
                 ))}
 
                 <Button

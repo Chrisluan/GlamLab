@@ -20,40 +20,43 @@ const AppointmentCard = lazy(() =>
 );
 
 export const Appointments = () => {
-  const { appointments, UpdateAllData } = useData();
+  const { appointments, UpdateAppointments } = useData();
   const now = new Date();
   const HandleOnDelete = async (id) => {
-    await DeleteAppointment(id).finally(
-      async () => await UpdateAllData()
-    );
+    await DeleteAppointment(id).finally(async () => await UpdateAppointments());
   };
+
+  const todaysAppointments = appointments.filter(
+    (appointment) =>
+      new Date(appointment.date).toDateString() == new Date().toDateString()
+  );
+  const todaysEstimatedGain =
+    todaysAppointments?.reduce((total, appointment) => {
+      const services = Object.values(appointment.servicesPrice || {});
+      const subtotal = services.reduce((sum, value) => sum + value, 0);
+      return total + subtotal;
+    }, 0);
+  console.log(todaysEstimatedGain);
   return (
     <Flex width={"100%"} flexDir={"column"} gap={1}>
-      <Accordion allowToggle bg={"brand.500"}>
+      <Accordion allowToggle bg={"brand.200"}>
         <AccordionItem>
           <AccordionButton textAlign={"left"}>
             <Text>Agendado para hoje</Text>
             <AccordionIcon />
+            <Text>R$ {todaysEstimatedGain.toFixed(2)} </Text>
           </AccordionButton>
           <AccordionPanel>
             <Suspense fallback={<LoadingScreen></LoadingScreen>}>
-              {appointments
-                .filter(
-                  (appointment) =>
-                    new Date(appointment?.date).toDateString() ===
-                    new Date().toDateString()
-                )
-                .map((appointment) => {
-                  return (
-                    <AppointmentCard
-                      OnCancel={async () =>
-                        await HandleOnDelete(appointment._id)
-                      }
-                      key={appointment._id}
-                      appointment={appointment}
-                    />
-                  );
-                })}
+              {todaysAppointments.map((appointment) => {
+                return (
+                  <AppointmentCard
+                    OnCancel={async () => await HandleOnDelete(appointment._id)}
+                    key={appointment._id}
+                    appointment={appointment}
+                  />
+                );
+              })}
             </Suspense>
           </AccordionPanel>
         </AccordionItem>

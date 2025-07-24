@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from "react";
 import EditingModal from "../Components/Appointments/EditingAppointmentModal";
 import CreateModal from "../Components/Appointments/CreateAppointmentModal";
 import CreateClientModal from "../Components/Clients/CreateClientModal";
+import CreateServiceModal from "../Components/Services/CreateServiceModal";
 // Importe os outros modais se existirem
 
 const ModalContext = createContext(null);
@@ -20,6 +21,7 @@ export const ModalProvider = ({ children }) => {
     message: "",
   });
   const [createModal, setCreateModal] = useState({ open: false, data: null });
+  const [createService, setCreateServiceModal] = useState({ open: false });
 
   const [createClientModal, setCreateClientModal] = useState({ open: false });
 
@@ -33,6 +35,12 @@ export const ModalProvider = ({ children }) => {
 
   const openCreateModal = () => {
     setCreateModal({ open: true });
+  };
+  const openCreateServiceModal = () => {
+    setCreateServiceModal({ open: true });
+  };
+  const closeCreateServiceModal = () => {
+    setCreateServiceModal({ open: false });
   };
 
   const closeCreateModal = () => {
@@ -55,12 +63,11 @@ export const ModalProvider = ({ children }) => {
     setMessageModal({ open: false, title: "", message: "" });
   };
   const openCreateClientModal = () => {
-    
     setCreateClientModal({ open: true });
-  }
+  };
   const closeCreateClientModal = () => {
     setCreateClientModal({ open: false });
-  }
+  };
 
   const contextValue = {
     openEditModal,
@@ -73,26 +80,34 @@ export const ModalProvider = ({ children }) => {
     closeMessageModal,
     openCreateClientModal,
     closeCreateClientModal,
+    openCreateServiceModal,
   };
 
   return (
     <ModalContext.Provider value={contextValue}>
-      
-      <EditingModal
-        popIn={editingModal.open}
-        setPopIn={closeEditModal}
-        appointment={editingModal.data}
-      />
-      <CreateModal
-        popIn={createModal.open}
-        setPopIn={closeCreateModal}
-      />
-      <CreateClientModal
-      
-        popIn={createClientModal.open}
-        setPopIn={closeCreateClientModal}
-        // Pass any additional props needed for CreateClientModal
-      />
+      {editingModal.open && (
+        <EditingModal
+          popIn={editingModal.open}
+          setPopIn={closeEditModal}
+          appointment={editingModal.data}
+        />
+      )}
+      {createModal.open && (
+        <CreateModal popIn={createModal.open} setPopIn={closeCreateModal} />
+      )}
+      {createClientModal.open && (
+        <CreateClientModal
+          popIn={createClientModal.open}
+          setPopIn={closeCreateClientModal}
+        />
+      )}
+      {createService.open && (
+        <CreateServiceModal
+          popIn={createService.open}
+          setPopIn={closeCreateServiceModal}
+        />
+      )}
+
       {children}
       {/* Warning Modal */}
       {/* <WarningModal

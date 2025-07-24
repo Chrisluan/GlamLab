@@ -18,20 +18,41 @@ const DataProvider = ({ children }) => {
   const [professionals, setProfessionals] = useState([]);
   const [services, setServices] = useState([]);
   const [finances, setFinances] = useState([]);
+  
 
   const FetchData = async () => {
-    setClients(await FetchAllClients());
-    setAppointments(await FetchAllAppointments());
-    setProfessionals(await FetchAllProfessionals());
-    setServices(await FetchAllServices());
+    UpdateAppointments();
+    UpdateClients();
+    UpdateProfessionals();
+    UpdateServices();
   };
   useEffect(() => {
     FetchData();
   }, []);
 
   const UpdateAllData = async () => {
+    console.log("Requiring All Data");
     await FetchData();
   };
+  const UpdateServices = async () => {
+    console.log("Requiring Services");
+    setServices(await FetchAllServices());
+  }
+  const UpdateAppointments = async () => {
+    console.log("Requiring Appointments");
+    setAppointments(await FetchAllAppointments());
+  };
+  const UpdateClients = async () => {
+    console.log("Requiring Clients");
+
+    setClients(await FetchAllClients());
+  }
+  const UpdateProfessionals = async () => {
+     console.log("Requiring Professionals");
+
+    setProfessionals(await FetchAllProfessionals());
+  };
+   
   return (
     <DataContext.Provider
       value={{
@@ -41,6 +62,10 @@ const DataProvider = ({ children }) => {
         professionals,
         finances,
         UpdateAllData,
+        UpdateServices,
+        UpdateAppointments,
+        UpdateClients,
+        UpdateProfessionals
       }}
     >
       {children}

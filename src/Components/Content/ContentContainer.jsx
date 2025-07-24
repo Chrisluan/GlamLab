@@ -7,7 +7,7 @@ import { useModal } from "../../Context/ModalsContext";
 import { form } from "framer-motion/client";
 export const ContentContainer = ({ children }) => {
   const { CurrentPageProps } = useContext(NavigationContext);
-  const { openEditModal, openCreateModal, openCreateClientModal } = useModal();
+  const { openEditModal, openCreateModal, openCreateClientModal, openCreateServiceModal } = useModal();
   return (
     <Flex
       sx={{
@@ -27,11 +27,11 @@ export const ContentContainer = ({ children }) => {
           borderRadius: "10px",
         }}
         padding={2}
-        boxShadow={"0px 10px 15px -3px rgba(0,0,0,0.1)"}
+        
       >
-        <Heading>{CurrentPageProps.title}</Heading>
+        <Heading fontSize={"larger"}>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"} gap={2}>
-          {renderPageButton({ openCreateModal, openEditModal, openCreateClientModal })}
+          {renderPageButton({ openCreateModal, openEditModal, openCreateClientModal, openCreateServiceModal })}
         </Flex>
       </Flex>
       <Flex
@@ -44,7 +44,7 @@ export const ContentContainer = ({ children }) => {
           p: 2,
           borderRadius: "10px",
         }}
-        boxShadow={"0px 10px 15px -3px rgba(0,0,0,0.1)"}
+       
       >
         {children}
       </Flex>
@@ -56,20 +56,20 @@ const renderPageButton = (actions) => {
   switch (CurrentPageProps.title) {
     case "Agendamentos":
       return (
-        <Button colorScheme="blue" onClick={() => actions.openCreateModal()}>
+        <Button onClick={() => actions.openCreateModal()}>
           Agendar
         </Button>
       );
     case "Clientes":
       return (
-        <Button colorScheme="green" onClick={() => actions.openCreateClientModal()}>
+        <Button onClick={() => actions.openCreateClientModal()}>
           Novo Cliente
         </Button>
       );
 
     case "Serviços":
       return (
-        <Button colorScheme="purple" onClick={() => openCreateServiceModal()}>
+        <Button onClick={() => actions.openCreateServiceModal()}>
           Novo Serviço
         </Button>
       );

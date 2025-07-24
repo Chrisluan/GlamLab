@@ -1,8 +1,8 @@
 import React from 'react'
-
+import UnderDevelopment from '../Components/Global/UnderDevelopment'
 export const Finances = () => {
   return (
-    <div>Finances</div>
+    <UnderDevelopment></UnderDevelopment>
   )
 }
 export default Finances

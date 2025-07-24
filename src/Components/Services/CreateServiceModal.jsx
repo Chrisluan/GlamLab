@@ -17,12 +17,13 @@ import {
   Link,
   Box,
   InputGroup,
+  InputLeftAddon,
+  InputRightAddon,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
-import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
-import { CreateClient } from "../../Context/DBConnectionMethods/Clients";
-
+import { CreateService } from "../../Context/DBConnectionMethods/Services";
+import { FaDollarSign } from "react-icons/fa";
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
     const el = document.getElementById(newId);
@@ -53,20 +54,16 @@ const scrollToAppointment = (newId) =>
     }
   }, 100);
 
-const CreateClientModal = ({ popIn, setPopIn }) => {
+const CreateServiceModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
-  const [selectedServices, setSelectedServices] = useState([
-    { service: "", price: 0 },
-  ]);
   const [sending, setSending] = useState(false);
   const [appointmentValue, setAppointmentValue] = useState(null);
-  const { professionals, clients, services, UpdateClients } = useData();
+  const {UpdateServices } = useData();
   const toast = useToast();
-
 
   const HandleFormChanges = (e) => {
     const { name, value } = e.target;
-
+    console.log(name, value);
     const keys = name.split(".");
     setForm((prevForm) => {
       const updatedForm = { ...prevForm };
@@ -93,10 +90,10 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
     setSending(true);
     const { ...formWithoutId } = form;
     try {
-      const response = await CreateClient(formWithoutId);
+      const response = await CreateService(formWithoutId);
       const newId = response.insertedId;
 
-      await UpdateClients();
+      await UpdateServices();
 
       toast({
         duration: 6000000,
@@ -115,7 +112,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
               onClose();
             }}
           >
-            Agendamento de {form?.name} criado com sucesso!
+            Serviço {form?.name} criado com sucesso!
           </Box>
         ),
       });
@@ -124,15 +121,12 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
     } catch (e) {
       console.error(e);
       toast({
-        title: "Erro ao criar agendamento",
+        title: "Erro ao criar serviço",
         status: "error",
         description: e.message,
       });
     }
     setForm({});
-    setSelectedServices([{ service: "", price: 0 }]);
-    setAppointmentValue(null);
-
     setSending(false);
   };
 
@@ -144,11 +138,11 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
       onClose={() => {
         setPopIn(false);
       }}
-      size={"3xl"}
+      size={"xl"}
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Novo Cliente</ModalHeader>
+        <ModalHeader>Novo Serviço</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -159,43 +153,38 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
               gap: 10,
             }}
           >
-            <Flex gap={5}>
-              <FormControl isRequired onChange={HandleFormChanges}>
-                <FormLabel>Nome</FormLabel>
-                <Input name="name"
-                title="name"
-                type="name"></Input>
-              </FormControl>
+            <FormControl isRequired onChange={HandleFormChanges}>
+              <FormLabel>Nome</FormLabel>
+              <Input name="name" title="Nome do Serviço" type="name"></Input>
+            </FormControl>
 
-              <FormControl>
-                <FormLabel>Email</FormLabel>
+            <FormControl>
+              <FormLabel>Preço Base</FormLabel>
+              <InputGroup>
+                <InputLeftAddon pointerEvents="none">R$</InputLeftAddon>
+
                 <Input
-                  name="email"
-                  title="email"
-                  type="email"
+                  name="minimumPrice"
+                  title="Valor Mínimo"
+                  type="number"
+                  min={0}
+                  max={1000}
                   onChange={HandleFormChanges}
                 ></Input>
-              </FormControl>
-              
-            </Flex>
-             <FormControl>
-                <FormLabel>Telefone</FormLabel>
+              </InputGroup>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Comissão Padrão</FormLabel>
+              <InputGroup>
                 <Input
-                  name="phone"
-                  title="phone"
-                  type="phone"
+                  name="defaultComission"
+                  title="Comissão Padrão"
+                  type="number"
                   onChange={HandleFormChanges}
                 ></Input>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Data de nascimento</FormLabel>
-                <Input
-                  name="birthdate"
-                  title="birthdate"
-                  type="datetime-local"
-                  onChange={HandleFormChanges}
-                ></Input>
-              </FormControl>
+                <InputRightAddon pointerEvents="none">%</InputRightAddon>
+              </InputGroup>
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>
@@ -210,4 +199,4 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
     </Modal>
   );
 };
-export default CreateClientModal;
+export default CreateServiceModal;

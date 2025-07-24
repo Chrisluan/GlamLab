@@ -39,7 +39,7 @@ const CreateAppointment = async (data) => {
 };
 const FetchAllAppointments = async () => {
   try {
-    console.log("Requiring Appointments");
+    
     const response = await fetch(
       "https://glamlab-backend.vercel.app/appointments"
     );

@@ -1,8 +1,9 @@
 import React from 'react'
+import UnderDevelopment from '../Components/Global/UnderDevelopment'
 
 const Professionals = () => {
   return (
-    <div>Professionals</div>
+    <UnderDevelopment></UnderDevelopment>
   )
 }
 export default Professionals
