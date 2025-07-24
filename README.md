@@ -1,6 +1,6 @@
 # GlamLab – Front-end
 
-Interface web do GlamLab, um sistema de gestão minimalista para salões de beleza. Este projeto foi desenvolvido utilizando **React**, **Vite** e **Chakra UI**, com foco em performance, usabilidade e um design limpo e responsivo.
+Interface web do GlamLab, um sistema de gestão minimalista para salões de beleza. Este projeto foi desenvolvido utilizando **React**, **Vite** e **Chakra UI**, com foco em performance, usabilidade e um design limpo e voltado apenas para uso em desktops.
 
 ---
 
