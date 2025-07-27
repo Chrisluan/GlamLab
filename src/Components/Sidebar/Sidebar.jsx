@@ -1,9 +1,10 @@
-import { Flex, Heading } from "@chakra-ui/react";
+import { Flex, Heading, Image } from "@chakra-ui/react";
 import React, { useState, useContext } from "react"; // Importar useState
 import SidebarButtonContainer from "./components/SidebarButtonContainer";
 import SidebarButton from "./components/SidebarButton";
 import { NavigationContext } from "../../Context/NavigationContext";
 import { options } from "../../Context/NavigationContext";
+import Logo from "/temp-logo.svg"
 export const Sidebar = () => {
   const { switchPage, CurrentPageProps } = useContext(NavigationContext);
 
@@ -16,7 +17,13 @@ export const Sidebar = () => {
       backgroundColor={"#f6f6f6"}
     >
       <Flex justifyContent={"center"} alignItems={"center"} height="80px">
-        <Heading fontSize={"2xl"}>GlamLab</Heading>
+        <Image
+          src={Logo}
+          alt="Logo"
+          width="130px"
+          objectFit="contain"
+          
+        />
       </Flex>
 
       <Flex flexDir={"column"}>

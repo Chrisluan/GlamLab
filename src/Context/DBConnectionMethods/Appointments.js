@@ -39,7 +39,6 @@ const CreateAppointment = async (data) => {
 };
 const FetchAllAppointments = async () => {
   try {
-    
     const response = await fetch(
       "https://glamlab-backend.vercel.app/appointments"
     );
@@ -51,18 +50,31 @@ const FetchAllAppointments = async () => {
 };
 const DeleteAppointment = async (id) => {
   try {
-    const response = await fetch(`https://glamlab-backend.vercel.app/appointments/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    });
-    return await response.json();
+    const response = await fetch(
+      `https://glamlab-backend.vercel.app/appointments/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      // Lança erro para que o toast capture
+      throw new Error(data?.message || "Erro ao excluir agendamento");
+    }
+
+    return data;
   } catch (e) {
-    console.log("Erro ao deletar agendamento:", e);
+    console.error("Erro ao deletar agendamento:", e);
+    throw e; // ← MUITO IMPORTANTE: repropagar erro para o toast.promise
   }
 };
+
 export {
   CreateAppointment,
   DeleteAppointment,

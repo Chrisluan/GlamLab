@@ -3,7 +3,7 @@ import {
   CreateAppointment,
   EditAppointment,
   FetchAllAppointments,
-  DeleteAppointment
+  DeleteAppointment,
 } from "./DBConnectionMethods/Appointments";
 import { lazy } from "react";
 import { FetchAllClients } from "./DBConnectionMethods/Clients";
@@ -18,7 +18,6 @@ const DataProvider = ({ children }) => {
   const [professionals, setProfessionals] = useState([]);
   const [services, setServices] = useState([]);
   const [finances, setFinances] = useState([]);
-  
 
   const FetchData = async () => {
     UpdateAppointments();
@@ -37,7 +36,7 @@ const DataProvider = ({ children }) => {
   const UpdateServices = async () => {
     console.log("Requiring Services");
     setServices(await FetchAllServices());
-  }
+  };
   const UpdateAppointments = async () => {
     console.log("Requiring Appointments");
     setAppointments(await FetchAllAppointments());
@@ -46,13 +45,13 @@ const DataProvider = ({ children }) => {
     console.log("Requiring Clients");
 
     setClients(await FetchAllClients());
-  }
+  };
   const UpdateProfessionals = async () => {
-     console.log("Requiring Professionals");
+    console.log("Requiring Professionals");
 
     setProfessionals(await FetchAllProfessionals());
   };
-   
+
   return (
     <DataContext.Provider
       value={{
@@ -65,7 +64,7 @@ const DataProvider = ({ children }) => {
         UpdateServices,
         UpdateAppointments,
         UpdateClients,
-        UpdateProfessionals
+        UpdateProfessionals,
       }}
     >
       {children}

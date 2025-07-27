@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
 import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
 import { CreateClient } from "../../Context/DBConnectionMethods/Clients";
-
+import { getToday } from "../../Utils/Date";
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
     const el = document.getElementById(newId);
@@ -62,7 +62,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
   const [appointmentValue, setAppointmentValue] = useState(null);
   const { professionals, clients, services, UpdateClients } = useData();
   const toast = useToast();
-
+  
 
   const HandleFormChanges = (e) => {
     const { name, value } = e.target;
@@ -162,9 +162,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
             <Flex gap={5}>
               <FormControl isRequired onChange={HandleFormChanges}>
                 <FormLabel>Nome</FormLabel>
-                <Input name="name"
-                title="name"
-                type="name"></Input>
+                <Input name="name" title="name" type="name"></Input>
               </FormControl>
 
               <FormControl>
@@ -176,26 +174,26 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
                   onChange={HandleFormChanges}
                 ></Input>
               </FormControl>
-              
             </Flex>
-             <FormControl>
-                <FormLabel>Telefone</FormLabel>
-                <Input
-                  name="phone"
-                  title="phone"
-                  type="phone"
-                  onChange={HandleFormChanges}
-                ></Input>
-              </FormControl>
-              <FormControl>
-                <FormLabel>Data de nascimento</FormLabel>
-                <Input
-                  name="birthdate"
-                  title="birthdate"
-                  type="datetime-local"
-                  onChange={HandleFormChanges}
-                ></Input>
-              </FormControl>
+            <FormControl>
+              <FormLabel>Telefone</FormLabel>
+              <Input
+                name="phone"
+                title="phone"
+                type="phone"
+                onChange={HandleFormChanges}
+              ></Input>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Data de nascimento</FormLabel>
+              <Input
+                name="birthdate"
+                title="birthdate"
+                type="date"
+                max={getToday()}
+                onChange={HandleFormChanges}
+              ></Input>
+            </FormControl>
           </form>
         </ModalBody>
         <ModalFooter>
