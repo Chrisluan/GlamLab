@@ -6,19 +6,10 @@
     "isDefault": true
   },
   {
-    "title": "Profissionais",
-    "page": "Professionals",
-    "icon": ""
-  },
-  {
     "title": "Agendamentos",
     "page": "Appointments",
-    "icon": ""
-  },
-  {
-    "title": "Financeiro",
-    "page": "Finances",
-    "icon": ""
+    "icon": "",
+    "isDefault": true
   },
   {
     "title": "Clientes",

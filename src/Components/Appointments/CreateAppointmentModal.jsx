@@ -22,8 +22,9 @@ import {
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
 import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
-import { useModal } from "../../Context/ModalsContext";
 
+import { SearchAndSelectBar } from "../Global/SearchAndSelectBar";
+import { ValidateForm } from "../../Utils/Validation";
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
     const el = document.getElementById(newId);
@@ -47,17 +48,12 @@ const scrollToAppointment = (newId) =>
       el.scrollIntoView({ behavior: "smooth", block: "center" });
 
       el.classList.remove("blink");
-      void el.offsetWidth; // força reflow para reiniciar a animação
+      void el.offsetWidth;
       el.classList.add("blink");
     } else {
       console.warn("Elemento não encontrado:", newId);
     }
   }, 100);
-
-
-  
-
-  
 
 const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
@@ -65,13 +61,22 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
     { service: "", price: 0 },
   ]);
   const [sending, setSending] = useState(false);
-  const [appointmentValue, setAppointmentValue] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
   const { professionals, clients, services, UpdateAppointments } = useData();
-  const {openCreateClientModal} = useModal();
+
+
   const toast = useToast();
 
   useEffect(() => {
-    console.log(form);
+    const checkFormValidity = async () => {
+      const { isValid } = await ValidateForm(
+        ["client", "date", "services", "professional", "status"],
+        form
+      );
+      setIsFormValid(isValid);
+      console.log("Formulário válido?", isValid);
+    };
+    checkFormValidity();
   }, [form]);
   const HandleFormChanges = (e) => {
     const { name, value } = e.target;
@@ -144,6 +149,7 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
     const { ...formWithoutId } = form;
 
     try {
+      console.log("Enviando dados para o banco:", formWithoutId);
       const response = await CreateAppointment(formWithoutId);
       const newId = response.insertedId;
 
@@ -173,16 +179,14 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
 
       setPopIn(false);
     } catch (e) {
-      console.error(e);
       toast({
-        title: "Erro ao criar agendamento",
+        title: e.message,
         status: "error",
-        description: e.message,
+        description: e.cause.join(", "),
       });
     }
     setForm({});
     setSelectedServices([{ service: "", price: 0 }]);
-    setAppointmentValue(null);
 
     setSending(false);
   };
@@ -211,31 +215,13 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
             }}
           >
             <Flex gap={5}>
-              <FormControl isRequired onChange={HandleFormChanges}>
+              <FormControl isRequired>
                 <FormLabel>Cliente</FormLabel>
-                <Select name="client" title="nome">
-                  <option value={null}>Selecione um cliente</option>
-                  {clients.map((client) => {
-                    return (
-                      <option
-                        defaultValue={JSON.stringify(client)}
-                        key={client._id}
-                        value={JSON.stringify(client)}
-                      >
-                        {client.name}
-                      </option>
-                    );
-                  })}
-                </Select>
-                <Text sx={{
-                  color: 'teal.500',
-                  cursor: 'pointer',
-                  textDecoration: 'underline',
-                  fontSize: 'sm',
-                  mt: 1,
-                }} onClick={async ()=> {
-                  openCreateClientModal();
-                }}>Novo cliente</Text>
+                <SearchAndSelectBar
+                  list={clients}
+                  onChange={HandleFormChanges}
+                />
+                
               </FormControl>
 
               <FormControl>
@@ -290,15 +276,13 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                         ))}
                       </Select>
                       <FormControl flex={0.5}>
-                       
                         <InputGroup>
-                        <InputLeftAddon>
-                          <Text>R$</Text>
-                        </InputLeftAddon>
+                          <InputLeftAddon>
+                            <Text>R$</Text>
+                          </InputLeftAddon>
                           <Input
                             name={`servicesPrice.${index}`}
                             type="number"
-                            
                             value={item.price}
                             onChange={(e) => handlePriceChange(e, index)}
                           />
@@ -310,12 +294,12 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
 
                 <Button
                   variant="outline"
-                  onClick={() =>
+                  onClick={(e) => {
                     setSelectedServices([
                       ...selectedServices,
                       { service: "", price: 0 },
-                    ])
-                  }
+                    ]);
+                  }}
                 >
                   Adicionar mais serviços...
                 </Button>
@@ -338,7 +322,23 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
           <Button variant="secondary" onClick={() => setPopIn(false)}>
             Cancelar
           </Button>
-          <Button isLoading={sending} onClick={() => SendToDb()} mr={3}>
+          <Button
+            isLoading={sending}
+            isDisabled={!isFormValid}
+            onClick={() => {
+              try {
+                SendToDb();
+              } catch (e) {
+                console.error("Erro ao enviar dados:", e);
+                toast({
+                  title: `Erro ao enviar dados: ${e.message}`,
+                  status: "error",
+                  description: e.message,
+                });
+              }
+            }}
+            mr={3}
+          >
             Confirmar
           </Button>
         </ModalFooter>

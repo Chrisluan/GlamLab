@@ -20,9 +20,9 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
-import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
 import { CreateClient } from "../../Context/DBConnectionMethods/Clients";
 import { getToday } from "../../Utils/Date";
+import { ValidateForm } from "../../Utils/Validation";
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
     const el = document.getElementById(newId);
@@ -55,15 +55,21 @@ const scrollToAppointment = (newId) =>
 
 const CreateClientModal = ({ popIn, setPopIn }) => {
   const [form, setForm] = useState({});
-  const [selectedServices, setSelectedServices] = useState([
-    { service: "", price: 0 },
-  ]);
+  const [isFormValid, setIsFormValid] = useState(false);
   const [sending, setSending] = useState(false);
-  const [appointmentValue, setAppointmentValue] = useState(null);
-  const { professionals, clients, services, UpdateClients } = useData();
+  const { UpdateClients } = useData();
   const toast = useToast();
-  
 
+  useEffect(() => {
+    const Validate  = () => {
+      const { isValid } = ValidateForm(
+        ["name", "birthdate", "phone"],
+        form
+      );
+      setIsFormValid(isValid);
+    };
+    Validate();
+  }, [form]);
   const HandleFormChanges = (e) => {
     const { name, value } = e.target;
 
@@ -126,11 +132,10 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
       toast({
         title: "Erro ao criar agendamento",
         status: "error",
-        description: e.message,
+        description: "Preencha estes campos: " + e.cause.join(", "),
       });
     }
     setForm({});
-    setSelectedServices([{ service: "", price: 0 }]);
     setAppointmentValue(null);
 
     setSending(false);
@@ -156,15 +161,23 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 10,
+              gap: 15,
             }}
           >
+            <FormControl isRequired onChange={HandleFormChanges}>
+              <FormLabel>Nome</FormLabel>
+              <Input name="name" title="name" type="name"></Input>
+            </FormControl>
             <Flex gap={5}>
-              <FormControl isRequired onChange={HandleFormChanges}>
-                <FormLabel>Nome</FormLabel>
-                <Input name="name" title="name" type="name"></Input>
+              <FormControl>
+                <FormLabel>Telefone</FormLabel>
+                <Input
+                  name="phone"
+                  title="phone"
+                  type="phone"
+                  onChange={HandleFormChanges}
+                ></Input>
               </FormControl>
-
               <FormControl>
                 <FormLabel>Email</FormLabel>
                 <Input
@@ -175,15 +188,6 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
                 ></Input>
               </FormControl>
             </Flex>
-            <FormControl>
-              <FormLabel>Telefone</FormLabel>
-              <Input
-                name="phone"
-                title="phone"
-                type="phone"
-                onChange={HandleFormChanges}
-              ></Input>
-            </FormControl>
             <FormControl>
               <FormLabel>Data de nascimento</FormLabel>
               <Input
@@ -200,7 +204,14 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
           <Button variant="secondary" onClick={() => setPopIn(false)}>
             Cancelar
           </Button>
-          <Button isLoading={sending} onClick={() => SendToDb()} mr={3}>
+          <Button
+            isLoading={sending}
+            isDisabled={!isFormValid}
+            onClick={() => {
+              SendToDb();
+            }}
+            mr={3}
+          >
             Confirmar
           </Button>
         </ModalFooter>

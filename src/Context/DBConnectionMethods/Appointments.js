@@ -1,4 +1,4 @@
-import { useData } from "../DataContext";
+import { ValidateForm } from "../../Utils/Validation";
 
 const EditAppointment = async (id, newData) => {
   try {
@@ -19,8 +19,18 @@ const EditAppointment = async (id, newData) => {
   }
 };
 const CreateAppointment = async (data) => {
-  console.log(data);
-  try {
+  console.log("Criando agendamento com os dados:", data);
+  const { isValid, invalidFields } = await ValidateForm(
+    ["client", "date", "services", "professional", "status"],
+    data
+  );
+ 
+  if (!isValid) {
+    throw new Error("Preencha todos os campos obrigatórios.", {
+      cause: invalidFields,
+    });
+    
+  } else {
     const response = await fetch(
       "https://glamlab-backend.vercel.app/appointments",
       {
@@ -33,8 +43,6 @@ const CreateAppointment = async (data) => {
       }
     );
     return await response.json();
-  } catch (e) {
-    console.log("Erro em: ", { e });
   }
 };
 const FetchAllAppointments = async () => {

@@ -1,3 +1,4 @@
+import { ValidateForm } from "../../Utils/Validation";
 const FetchAllClients = async () => {
   try {
     const response = await fetch("https://glamlab-backend.vercel.app/clients");
@@ -8,6 +9,16 @@ const FetchAllClients = async () => {
   }
 };
 const CreateClient = async (clientData) => {
+  const { isValid, invalidFields } = ValidateForm(
+      ["name", "birthdate", "phone"],
+      clientData
+    );
+
+  if (!isValid) {
+    throw new Error("Preencha todos os campos obrigatórios.", {
+      cause: invalidFields,
+    });
+  }
   try {
     const response = await fetch("https://glamlab-backend.vercel.app/clients", {
       method: "POST",
