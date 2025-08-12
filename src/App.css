@@ -2,3 +2,21 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     src: url("segoeuithibd.ttf");
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

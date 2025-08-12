@@ -6,6 +6,7 @@ import {
   Portal,
   Button,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { useModal } from "../../Context/ModalsContext";
 export const SearchAndSelectBar = ({ list, onChange }) => {
@@ -58,24 +59,35 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
             top={dropdownPos.top + "px"}
             left={dropdownPos.left + "px"}
             width={dropdownPos.width + "px"}
+            backgroundColor="brand.200"
+            padding={2}
           >
             <Flex
-              border="1px solid #ccc"
-              backgroundColor="brand.200"
+              
               flexDir="column"
               maxHeight="200px"
-              p={2}
+              overflowY={"auto"}
               borderRadius="md"
+            gap={2}
             >
               {filteredList.length > 0 ? (
                 filteredList.map((client) => (
-                  <Button
+                  <Box
                     key={client._id}
+                    sx={{
+                      cursor: "pointer",
+                      width: "100%",
+                      textAlign: "left",
+                      justifyContent: "flex-start",
+                      fontSize: "sm",
+                      borderRadius: "0",
+                      padding:"10px 15px",
+                      backgroundColor: "brand.100",
+                    }}
                     onClick={() => {
                       setSearchKeyword(client.name);
                       setIsSearching(false);
 
-                      // Aqui simulamos o mesmo formato que seu HandleFormChanges espera
                       if (onChange) {
                         onChange({
                           target: {
@@ -87,27 +99,28 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
                     }}
                   >
                     {client.name}
-                  </Button>
+                  </Box>
                 ))
               ) : (
-                <span style={{ color: "white" }}>
+                <span style={{ color: "" }}>
                   Nenhum cliente encontrado
                 </span>
               )}
-              
             </Flex>
-            <Text
-                sx={{
-                  color: "teal.500",
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                  fontSize: "sm",
-                  mt: 1,
-                }}
-                onClick={openCreateClientModal}
-              >
-                Novo cliente
-              </Text>
+            <Button
+              variant={"solid"}
+              sx={{
+                
+                fontSize: "sm",
+                mt: 1,
+              }}
+              onClick={() => {
+                openCreateClientModal();
+                setIsSearching(false);
+              }}
+            >
+              Novo cliente
+            </Button>
           </Flex>
         </Portal>
       )}

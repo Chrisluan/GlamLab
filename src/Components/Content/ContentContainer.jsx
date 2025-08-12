@@ -31,7 +31,7 @@ export const ContentContainer = ({ children }) => {
       >
         <Heading fontSize={"larger"}>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"} gap={2}>
-          {renderPageButton({ openCreateModal, openEditModal, openCreateClientModal, openCreateServiceModal })}
+          {renderPageButton({ openCreateModal, openCreateClientModal, openCreateServiceModal}, CurrentPageProps)}
         </Flex>
       </Flex>
       <Flex
@@ -51,8 +51,7 @@ export const ContentContainer = ({ children }) => {
     </Flex>
   );
 };
-const renderPageButton = (actions) => {
-  const { CurrentPageProps } = useContext(NavigationContext);
+const renderPageButton = (actions, CurrentPageProps) => {
   switch (CurrentPageProps.title) {
     case "Agendamentos":
       return (

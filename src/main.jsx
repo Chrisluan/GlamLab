@@ -9,15 +9,15 @@ import theme from "./Theme/theme.js";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ChakraProvider theme={theme}>
-      <NavigationProvider>
-        <Suspense fallback={() => <Spinner></Spinner>}>
-          <DataProvider>
+      <DataProvider>
+        <NavigationProvider>
+          <Suspense fallback={<Spinner />}>
             <ModalProvider>
               <App />
             </ModalProvider>
-          </DataProvider>
-        </Suspense>
-      </NavigationProvider>
+          </Suspense>
+        </NavigationProvider>
+      </DataProvider>
     </ChakraProvider>
   </StrictMode>
 );
