@@ -16,7 +16,6 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
   const [isSearching, setIsSearching] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0, width: 0 });
   const inputRef = useRef();
-
   useEffect(() => {
     setFilteredList(
       searchKeyword.length === 0
@@ -46,6 +45,11 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
           placeholder="Procurar"
           value={searchKeyword}
           onFocus={() => setIsSearching(true)}
+          onBlur={async () => 
+            await setTimeout(() => {
+              setIsSearching(false);
+            }, 200)
+          }
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
       </InputGroup>
@@ -63,12 +67,11 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
             padding={2}
           >
             <Flex
-              
               flexDir="column"
               maxHeight="200px"
               overflowY={"auto"}
               borderRadius="md"
-            gap={2}
+              gap={2}
             >
               {filteredList.length > 0 ? (
                 filteredList.map((client) => (
@@ -81,13 +84,10 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
                       justifyContent: "flex-start",
                       fontSize: "sm",
                       borderRadius: "0",
-                      padding:"10px 15px",
+                      padding: "10px 15px",
                       backgroundColor: "brand.100",
                     }}
                     onClick={() => {
-                      setSearchKeyword(client.name);
-                      setIsSearching(false);
-
                       if (onChange) {
                         onChange({
                           target: {
@@ -96,21 +96,20 @@ export const SearchAndSelectBar = ({ list, onChange }) => {
                           },
                         });
                       }
+                      setSearchKeyword(client.name);
+                      setIsSearching(false);
                     }}
                   >
                     {client.name}
                   </Box>
                 ))
               ) : (
-                <span style={{ color: "" }}>
-                  Nenhum cliente encontrado
-                </span>
+                <span style={{ color: "" }}>Nenhum cliente encontrado</span>
               )}
             </Flex>
             <Button
               variant={"solid"}
               sx={{
-                
                 fontSize: "sm",
                 mt: 1,
               }}
