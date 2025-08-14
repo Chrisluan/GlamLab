@@ -3,7 +3,7 @@ import { ValidateForm } from "../../Utils/Validation";
 const EditAppointment = async (id, newData) => {
   try {
     const rawResponse = await fetch(
-      `https://glamlab-backend.vercel.app/editappointment/${id}`,
+      `https://glamlab-backend.vercel.app/appointments/${id}`,
       {
         method: "PUT",
         headers: {

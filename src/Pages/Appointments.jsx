@@ -63,7 +63,7 @@ export const Appointments = () => {
   );
   return (
     <Flex width={"100%"} flexDir={"column"} gap={1}>
-      <Accordion allowToggle bg={"brand.200"}>
+      <Accordion allowToggle defaultChecked bg={"brand.200"}>
         <AccordionItem>
           <AccordionButton textAlign={"left"}>
             <Text>Agendado para hoje</Text>
