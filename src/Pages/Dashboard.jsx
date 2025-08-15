@@ -97,7 +97,10 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const total = appointments.reduce((acc, appointment) => {
-      const services = Object.values(appointment.servicesPrice || {});
+      const services =
+        appointment.status == "confirmed" ?
+        Object.values(appointment.servicesPrice || {}) : [];
+
       const subtotal = services.reduce((sum, value) => sum + value, 0);
       return acc + subtotal;
     }, 0);
@@ -105,7 +108,6 @@ export const Dashboard = () => {
   }, [appointments]);
   return (
     <Flex h="100vh" bg="#FFF9F5">
-
       {/* Conteúdo principal */}
       <Flex direction="column" flex={1} p={6} gap={6}>
         {/* Topbar */}

@@ -10,7 +10,11 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteAppointment, useData } from "../Context/DataContext";
+import {
+  DeleteAppointment,
+  EditAppointment,
+  useData,
+} from "../Context/DataContext";
 import LoadingScreen from "../Components/Global/LoadingScreen";
 import EditingModal from "../Components/Appointments/EditingAppointmentModal";
 import { useModal } from "../Context/ModalsContext";
@@ -53,6 +57,9 @@ export const Appointments = () => {
     (appointment) =>
       new Date(appointment.date).toDateString() == new Date().toDateString()
   );
+  const confirmedAppointments = appointments.filter(
+    (appointment) => appointment.status == "confirmed"
+  );
   const todaysEstimatedGain = todaysAppointments?.reduce(
     (total, appointment) => {
       const services = Object.values(appointment.servicesPrice || {});
@@ -61,6 +68,15 @@ export const Appointments = () => {
     },
     0
   );
+  const confirmedEstimatedGain = confirmedAppointments?.reduce(
+    (total, appointment) => {
+      const services = Object.values(appointment.servicesPrice || {});
+      const subtotal = services.reduce((sum, value) => sum + value, 0);
+      return total + subtotal;
+    },
+    0
+  );
+
   return (
     <Flex width={"100%"} flexDir={"column"} gap={1}>
       <Accordion allowToggle defaultChecked bg={"brand.200"}>
@@ -76,6 +92,48 @@ export const Appointments = () => {
                 return (
                   <AppointmentCard
                     OnCancel={async () => await HandleOnDelete(appointment._id)}
+                    OnConfirm={async () =>
+                      await EditAppointment(appointment._id, {
+                        status: "confirmed",
+                      })
+                    }
+                    OnMakePending={async () =>
+                      await EditAppointment(appointment._id, {
+                        status: "pending",
+                      })
+                    }
+                    key={appointment._id}
+                    appointment={appointment}
+                  />
+                );
+              })}
+            </Suspense>
+          </AccordionPanel>
+        </AccordionItem>
+      </Accordion>
+      <Accordion allowToggle defaultChecked bg={"brand.200"}>
+        <AccordionItem>
+          <AccordionButton textAlign={"left"}>
+            <Text>Confirmados</Text>
+            <AccordionIcon />
+            <Text>R$ {confirmedEstimatedGain.toFixed(2)} </Text>
+          </AccordionButton>
+          <AccordionPanel>
+            <Suspense fallback={<LoadingScreen></LoadingScreen>}>
+              {confirmedAppointments.map((appointment) => {
+                return (
+                  <AppointmentCard
+                    OnCancel={async () => await HandleOnDelete(appointment._id)}
+                    OnConfirm={async () =>
+                      await EditAppointment(appointment._id, {
+                        status: "confirmed",
+                      })
+                    }
+                    OnMakePending={async () =>
+                      await EditAppointment(appointment._id, {
+                        status: "pending",
+                      })
+                    }
                     key={appointment._id}
                     appointment={appointment}
                   />
@@ -96,11 +154,21 @@ export const Appointments = () => {
           .filter(
             (appointment) =>
               new Date(appointment?.date).toDateString() !==
-              new Date().toDateString()
+              new Date().toDateString() && appointment.status == "pending"
           )
           .map((appointment, i) => (
             <AppointmentCard
               OnCancel={async () => await HandleOnDelete(appointment._id)}
+              OnConfirm={async () =>
+                await EditAppointment(appointment._id, {
+                  status: "confirmed",
+                }).then(async () => await UpdateAppointments())
+              }
+              OnMakePending={async () =>
+                await EditAppointment(appointment._id, {
+                  status: "pending",
+                }).then(async () => await UpdateAppointments())
+              }
               id={i}
               key={i}
               appointment={appointment}

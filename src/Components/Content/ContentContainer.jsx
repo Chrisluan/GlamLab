@@ -7,7 +7,12 @@ import { useModal } from "../../Context/ModalsContext";
 import { form } from "framer-motion/client";
 export const ContentContainer = ({ children }) => {
   const { CurrentPageProps } = useContext(NavigationContext);
-  const { openEditModal, openCreateModal, openCreateClientModal, openCreateServiceModal } = useModal();
+  const {
+    openEditModal,
+    openCreateModal,
+    openCreateClientModal,
+    openCreateServiceModal,
+  } = useModal();
   return (
     <Flex
       sx={{
@@ -27,11 +32,13 @@ export const ContentContainer = ({ children }) => {
           borderRadius: "10px",
         }}
         padding={2}
-        
       >
         <Heading fontSize={"larger"}>{CurrentPageProps.title}</Heading>
         <Flex flexDir={"row"} gap={2}>
-          {renderPageButton({ openCreateModal, openCreateClientModal, openCreateServiceModal}, CurrentPageProps)}
+          {renderPageButton(
+            { openCreateModal, openCreateClientModal, openCreateServiceModal },
+            CurrentPageProps
+          )}
         </Flex>
       </Flex>
       <Flex
@@ -44,7 +51,6 @@ export const ContentContainer = ({ children }) => {
           p: 2,
           borderRadius: "10px",
         }}
-       
       >
         {children}
       </Flex>
@@ -54,11 +60,7 @@ export const ContentContainer = ({ children }) => {
 const renderPageButton = (actions, CurrentPageProps) => {
   switch (CurrentPageProps.title) {
     case "Agendamentos":
-      return (
-        <Button onClick={() => actions.openCreateModal()}>
-          Agendar
-        </Button>
-      );
+      return <Button onClick={() => actions.openCreateModal()}>Agendar</Button>;
     case "Clientes":
       return (
         <Button onClick={() => actions.openCreateClientModal()}>
@@ -72,7 +74,12 @@ const renderPageButton = (actions, CurrentPageProps) => {
           Novo Serviço
         </Button>
       );
-
+    case "Painel":
+      return (
+        <Button onClick={() => actions.openCreateModal()}>
+          Agendar
+        </Button>
+      );
     default:
       return null;
   }

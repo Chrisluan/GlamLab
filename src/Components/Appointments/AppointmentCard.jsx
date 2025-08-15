@@ -21,6 +21,7 @@ const AppointmentCard = ({
   setEditingAppointments,
   OnCancel,
   OnConfirm,
+  OnMakePending,
 }) => {
   const { openEditModal } = useModal();
   const formattedTime = new Date(appointment.date).toLocaleTimeString([], {
@@ -87,14 +88,21 @@ const AppointmentCard = ({
             <FaEye /> Ver mais
           </MenuItem>
           <MenuDivider />
-          <MenuItem gap={2} onClick={() => OnConfirm()}>
-            <FaCheck /> Confirmar
-          </MenuItem>
+          {appointment.status == "pending" ? (
+            <MenuItem gap={2} onClick={async () => await OnConfirm()}>
+              <FaCheck /> Confirmar
+            </MenuItem>
+          ) : (
+            <MenuItem gap={2} onClick={async () => await OnMakePending()}>
+              <FaCheck /> Cancelar
+            </MenuItem>
+          )}
+
           <MenuItem gap={2} onClick={() => openEditModal(appointment)}>
             <FaEdit /> Editar
           </MenuItem>
           <MenuItem gap={2} color="red.500" onClick={() => OnCancel()}>
-            <MdCancel /> Cancelar
+            <MdCancel /> Excluir
           </MenuItem>
         </MenuList>
       </Menu>
@@ -138,7 +146,8 @@ const DayTags = ({ date }) => {
           ? "green.500"
           : period === "Amanhã"
           ? "blue.500"
-          : period === "Ontem" ? "red.500"
+          : period === "Ontem"
+          ? "red.500"
           : "gray.500"
       }
       borderRadius="md"

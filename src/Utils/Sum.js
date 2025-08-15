@@ -1,0 +1,4 @@
+function GetTotalSumOf(){
+    
+}
+export {GetTotalSumOf};
