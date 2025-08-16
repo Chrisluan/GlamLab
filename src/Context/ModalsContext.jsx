@@ -10,6 +10,10 @@ ModalContext.displayName = "ModalContext";
 
 export const ModalProvider = ({ children }) => {
   const [editingModal, setEditingModal] = useState({ open: false, data: null });
+  const [clientEditingModal, setClientEditingModal] = useState({
+    open: false,
+    data: null,
+  })
   const [warningModal, setWarningModal] = useState({
     open: false,
     title: "",

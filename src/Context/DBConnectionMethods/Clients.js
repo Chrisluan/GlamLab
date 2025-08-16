@@ -10,7 +10,7 @@ const FetchAllClients = async () => {
 };
 const CreateClient = async (clientData) => {
   const { isValid, invalidFields } = ValidateForm(
-      ["name", "birthdate", "phone"],
+      ["name", "phone"],
       clientData
     );
 
@@ -29,8 +29,7 @@ const CreateClient = async (clientData) => {
     });
     return response.json();
   } catch (e) {
-    console.log("Erro ao criar cliente: " + e.message);
-    throw new Error("Erro ao criar cliente");
+    throw new Error("Erro ao criar cliente: ", e.message);
   }
 };
 

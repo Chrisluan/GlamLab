@@ -23,49 +23,16 @@ import { useData } from "../../Context/DataContext";
 import { CreateClient } from "../../Context/DBConnectionMethods/Clients";
 import { getToday } from "../../Utils/Date";
 import { ValidateForm } from "../../Utils/Validation";
-const scrollToAppointment = (newId) =>
-  setTimeout(() => {
-    const el = document.getElementById(newId);
-    if (el) {
-      if (!document.getElementById("blink-style")) {
-        const style = document.createElement("style");
-        style.id = "blink-style";
-        style.textContent = `
-                    @keyframes blink {
-                      0% { background-color: #E8E3D9; }
-                      50% { background-color: transparent; }
-                      100% { background-color: #E8E3D9; }
-                    }
-
-                    .blink {
-                      animation: blink 1s ease-in-out 3;
-                    }
-                  `;
-        document.head.appendChild(style);
-      }
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-
-      el.classList.remove("blink");
-      void el.offsetWidth; // força reflow para reiniciar a animação
-      el.classList.add("blink");
-    } else {
-      console.warn("Elemento não encontrado:", newId);
-    }
-  }, 100);
-
-const CreateClientModal = ({ popIn, setPopIn }) => {
-  const [form, setForm] = useState({});
+const EditClientModal = ({ popIn, setPopIn, startValues }) => {
+  const [form, setForm] = useState(startValues);
   const [isFormValid, setIsFormValid] = useState(false);
   const [sending, setSending] = useState(false);
   const { UpdateClients } = useData();
   const toast = useToast();
 
   useEffect(() => {
-    const Validate  = () => {
-      const { isValid } = ValidateForm(
-        ["name", "phone"],
-        form
-      );
+    const Validate = () => {
+      const { isValid } = ValidateForm(["name", "birthdate", "phone"], form);
       setIsFormValid(isValid);
     };
     Validate();
@@ -95,6 +62,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
       return updatedForm;
     });
   };
+  
   const SendToDb = async () => {
     setSending(true);
     const { ...formWithoutId } = form;
@@ -166,15 +134,15 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
           >
             <FormControl isRequired onChange={HandleFormChanges}>
               <FormLabel>Nome</FormLabel>
-              <Input name="name" title="Nome do Cliente" type="name"></Input>
+              <Input name="name" title="name" type="name"></Input>
             </FormControl>
             <Flex gap={5}>
               <FormControl>
                 <FormLabel>Telefone</FormLabel>
                 <Input
                   name="phone"
-                  title="Número de contato do Cliente"
-                  type="tel"
+                  title="phone"
+                  type="phone"
                   onChange={HandleFormChanges}
                 ></Input>
               </FormControl>
@@ -182,7 +150,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
                 <FormLabel>Email</FormLabel>
                 <Input
                   name="email"
-                  title="E-mail de contato do cliente"
+                  title="email"
                   type="email"
                   onChange={HandleFormChanges}
                 ></Input>
@@ -192,7 +160,7 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
               <FormLabel>Data de nascimento</FormLabel>
               <Input
                 name="birthdate"
-                title="Data de nascimento do Cliente"
+                title="birthdate"
                 type="date"
                 max={getToday()}
                 onChange={HandleFormChanges}
@@ -219,4 +187,4 @@ const CreateClientModal = ({ popIn, setPopIn }) => {
     </Modal>
   );
 };
-export default CreateClientModal;
+export default EditClientModal;

@@ -12,9 +12,9 @@ import {
 import React from "react";
 import { useModal } from "../../Context/ModalsContext";
 import { SlOptions } from "react-icons/sl";
-import { FaCheck, FaEdit, FaEye } from "react-icons/fa";
+import { FaCheck, FaEdit, FaEye, FaTrash, FaWindowClose } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-
+import { IoCloseSharp } from "react-icons/io5";
 const AppointmentCard = ({
   id,
   appointment,
@@ -94,7 +94,7 @@ const AppointmentCard = ({
             </MenuItem>
           ) : (
             <MenuItem gap={2} onClick={async () => await OnMakePending()}>
-              <FaCheck /> Cancelar
+              <IoCloseSharp /> Cancelar
             </MenuItem>
           )}
 
@@ -102,7 +102,7 @@ const AppointmentCard = ({
             <FaEdit /> Editar
           </MenuItem>
           <MenuItem gap={2} color="red.500" onClick={() => OnCancel()}>
-            <MdCancel /> Excluir
+            <FaTrash /> Excluir
           </MenuItem>
         </MenuList>
       </Menu>

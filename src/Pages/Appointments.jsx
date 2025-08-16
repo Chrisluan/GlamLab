@@ -9,6 +9,8 @@ import {
   AccordionIcon,
   Text,
   useToast,
+  FormHelperText,
+  Divider,
 } from "@chakra-ui/react";
 import {
   DeleteAppointment,
@@ -82,7 +84,7 @@ export const Appointments = () => {
       <Accordion allowToggle defaultChecked bg={"brand.200"}>
         <AccordionItem>
           <AccordionButton textAlign={"left"}>
-            <Text>Agendado para hoje</Text>
+            <Text>Hoje</Text>
             <AccordionIcon />
             <Text>R$ {todaysEstimatedGain.toFixed(2)} </Text>
           </AccordionButton>
@@ -97,10 +99,10 @@ export const Appointments = () => {
                         status: "confirmed",
                       })
                     }
-                    OnMakePending={async () =>
-                      await EditAppointment(appointment._id, {
+                    OnMakePending={() =>
+                      EditAppointment(appointment._id, {
                         status: "pending",
-                      })
+                      }).then(async () => await UpdateAppointments())
                     }
                     key={appointment._id}
                     appointment={appointment}
@@ -114,7 +116,7 @@ export const Appointments = () => {
       <Accordion allowToggle defaultChecked bg={"brand.200"}>
         <AccordionItem>
           <AccordionButton textAlign={"left"}>
-            <Text>Confirmados</Text>
+            <Text>Confirmados totais</Text>
             <AccordionIcon />
             <Text>R$ {confirmedEstimatedGain.toFixed(2)} </Text>
           </AccordionButton>
@@ -129,10 +131,10 @@ export const Appointments = () => {
                         status: "confirmed",
                       })
                     }
-                    OnMakePending={async () =>
-                      await EditAppointment(appointment._id, {
+                    OnMakePending={() =>
+                      EditAppointment(appointment._id, {
                         status: "pending",
-                      })
+                      }).then(async () => await UpdateAppointments())
                     }
                     key={appointment._id}
                     appointment={appointment}
@@ -143,29 +145,26 @@ export const Appointments = () => {
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
+      <Divider height={3} p={0}></Divider>
+      <Text p={0} fontSize={"sm"}>Não confirmados / Pendente</Text>
+      <Divider ></Divider>
       <Suspense fallback={<LoadingScreen></LoadingScreen>}>
         {appointments
-          .sort((a, b) => {
-            return (
-              Math.abs(new Date(a.date) - now) -
-              Math.abs(new Date(b.date) - now)
-            );
-          })
           .filter(
             (appointment) =>
               new Date(appointment?.date).toDateString() !==
-              new Date().toDateString() && appointment.status == "pending"
+                new Date().toDateString() && appointment.status == "pending"
           )
           .map((appointment, i) => (
             <AppointmentCard
               OnCancel={async () => await HandleOnDelete(appointment._id)}
-              OnConfirm={async () =>
-                await EditAppointment(appointment._id, {
+              OnConfirm={() =>
+                EditAppointment(appointment._id, {
                   status: "confirmed",
                 }).then(async () => await UpdateAppointments())
               }
-              OnMakePending={async () =>
-                await EditAppointment(appointment._id, {
+              OnMakePending={() =>
+                EditAppointment(appointment._id, {
                   status: "pending",
                 }).then(async () => await UpdateAppointments())
               }
