@@ -14,7 +14,8 @@ export default function SidebarButton(props) {
       <Box
         {...checkbox}
         cursor="pointer"
-        position= "relative"
+        position="relative"
+        onClick={props.onClick}
         _checked={{
           bg: "brand.200",
           color: "white",

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Heading,
@@ -25,7 +26,7 @@ export const Sidebar = () => {
   const SIDEBAR_WIDTH = 230;
 
   return (
-    <>
+    <Box>
       <IconButton
         aria-label="toggle-sidebar"
         onClick={() => setIsSideBarOpen((s) => !s)}
@@ -44,13 +45,16 @@ export const Sidebar = () => {
         }
       />
 
-      <AnimatePresence initial={false}>
+      <AnimatePresence initial={true}>
         {isSideBarOpen && (
           <MotionFlex
             // animações usando transform (x)
-            initial={{ x: -SIDEBAR_WIDTH }}
+            initial={{ x: -SIDEBAR_WIDTH + 20 }}
             animate={{ x: 0 }}
-            exit={{ x: -SIDEBAR_WIDTH }}
+            exit={{
+              x: -SIDEBAR_WIDTH + 20,
+              boxShadow: "0px 0px 10px rgba(0,0,0,0.9)",
+            }}
             transition={{ duration: 0.28, ease: "easeOut" }}
             position="fixed" // fixed evita que quebre o fluxo da página
             top="0"
@@ -78,6 +82,7 @@ export const Sidebar = () => {
                     defaultChecked={o.isDefault}
                     key={i}
                     value={o.page}
+                    onClick={() => setIsSideBarOpen((v) => (v = !v))}
                   >
                     {o.title}
                   </SidebarButton>
@@ -87,7 +92,7 @@ export const Sidebar = () => {
           </MotionFlex>
         )}
       </AnimatePresence>
-    </>
+    </Box>
   );
 };
 

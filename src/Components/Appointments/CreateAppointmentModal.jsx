@@ -13,8 +13,7 @@ import {
   FormLabel,
   Flex,
   Input,
-  Text,
-  Link,
+  IconButton,
   Box,
   InputGroup,
   InputLeftAddon,
@@ -22,9 +21,10 @@ import {
 import { useEffect, useState } from "react";
 import { useData } from "../../Context/DataContext";
 import { CreateAppointment } from "../../Context/DBConnectionMethods/Appointments";
-
+import { useModal } from "../../Context/ModalsContext";
 import { SearchAndSelectBar } from "../Global/SearchAndSelectBar";
 import { ValidateForm } from "../../Utils/Validation";
+import { PlusSquareIcon } from "@chakra-ui/icons";
 const scrollToAppointment = (newId) =>
   setTimeout(() => {
     const el = document.getElementById(newId);
@@ -64,8 +64,13 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const { professionals, clients, services, UpdateAppointments } = useData();
 
-
   const toast = useToast();
+  const {
+    openEditModal,
+    openCreateModal,
+    openCreateClientModal,
+    openCreateServiceModal,
+  } = useModal();
 
   useEffect(() => {
     const checkFormValidity = async () => {
@@ -74,7 +79,6 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
         form
       );
       setIsFormValid(isValid);
-      console.log("Formulário válido?", isValid);
     };
     checkFormValidity();
   }, [form]);
@@ -132,7 +136,6 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
 
   const handlePriceChange = (e, index) => {
     const value = parseFloat(e.target.value) || 0;
-
     const updatedServices = [...selectedServices];
     updatedServices[index].price = value;
     setSelectedServices(updatedServices);
@@ -151,12 +154,13 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
     try {
       console.log("Enviando dados para o banco:", formWithoutId);
       const response = await CreateAppointment(formWithoutId);
+
       const newId = response.insertedId;
 
       await UpdateAppointments();
 
       toast({
-        duration: 6000000,
+        duration: 3000,
         isClosable: true,
         position: "top-right",
         render: ({ onClose }) => (
@@ -199,10 +203,10 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
       onClose={() => {
         setPopIn(false);
       }}
-      size={"3xl"}
+      size={"2xl"}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent sx={{ marginInline: 2 }}>
         <ModalHeader>Novo agendamento</ModalHeader>
         <ModalCloseButton />
 
@@ -211,17 +215,19 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: 10,
+              gap: 5,
             }}
           >
-            <Flex gap={5}>
+            <Flex gap={5} flexDir={"column"}>
               <FormControl isRequired>
                 <FormLabel>Cliente</FormLabel>
                 <SearchAndSelectBar
                   list={clients}
-                  onChange={HandleFormChanges}
+                  formNameID="client"
+                  onChange={(e) => HandleFormChanges(e)}
+                  onCreateNew={openCreateClientModal}
+                  getLabel={(obj) => obj.name}
                 />
-                
               </FormControl>
 
               <FormControl>
@@ -234,22 +240,13 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                 ></Input>
               </FormControl>
             </Flex>
-            <FormControl onChange={HandleFormChanges}>
+            <FormControl isRequired>
               <FormLabel>Profissional</FormLabel>
-              <Select name="professional" title="professional">
-                <option value={null}>Selecione um profissional</option>
-                {professionals.map((professional) => {
-                  return (
-                    <option
-                      defaultValue={null}
-                      key={professional._id}
-                      value={JSON.stringify(professional)}
-                    >
-                      {professional.name}
-                    </option>
-                  );
-                })}
-              </Select>
+              <SearchAndSelectBar
+                list={professionals}
+                formNameID="professional"
+                onChange={HandleFormChanges}
+              />
             </FormControl>
             <Flex gap={5}>
               <FormControl isRequired flex={2}>
@@ -258,9 +255,9 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                     <FormLabel p={0} mb={0}>
                       Serviço {index + 1}
                     </FormLabel>
-                    <Flex gap={2} alignItems={"center"} key={index}>
+                    <Flex gap={1} alignItems={"center"} key={index}>
                       <Select
-                        flex={2}
+                        flex={3}
                         name={`services.${index}`}
                         value={item.service}
                         onChange={(e) => handleServiceChange(e, index)}
@@ -275,11 +272,9 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                           </option>
                         ))}
                       </Select>
-                      <FormControl flex={0.5}>
+                      <FormControl flex={2}>
                         <InputGroup>
-                          <InputLeftAddon>
-                            <Text>R$</Text>
-                          </InputLeftAddon>
+                          <InputLeftAddon fontSize={"2px"}>R$</InputLeftAddon>
                           <Input
                             name={`servicesPrice.${index}`}
                             type="number"
@@ -292,7 +287,7 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                   </Flex>
                 ))}
 
-                <Button
+                <IconButton
                   variant="outline"
                   onClick={(e) => {
                     setSelectedServices([
@@ -300,9 +295,10 @@ const CreateAppointmentModal = ({ popIn, setPopIn }) => {
                       { service: "", price: 0 },
                     ]);
                   }}
-                >
-                  Adicionar mais serviços...
-                </Button>
+                  icon={<PlusSquareIcon />}
+                  aria-label="Adicionar serviço"
+                  mt={2}
+                ></IconButton>
               </FormControl>
             </Flex>
             <FormControl flex={1} onChange={HandleFormChanges}>
